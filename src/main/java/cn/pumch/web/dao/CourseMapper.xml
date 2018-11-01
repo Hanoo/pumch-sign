@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pumch.web.dao.CourseMapper">
+    <resultMap id="BaseResultMap" type="cn.pumch.web.model.Course">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="t_id" jdbcType="BIGINT" property="tId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, course_name, t_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from course
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from course
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.pumch.web.model.Course">
+        insert into course (id, course_name, t_id
+          )
+        values (#{id,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{tId,jdbcType=BIGINT}
+          )
+    </insert>
+    <insert id="insertSelective" parameterType="cn.pumch.web.model.Course">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="courseName != null">
+                course_name,
+            </if>
+            <if test="tId != null">
+                t_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="courseName != null">
+                #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="tId != null">
+                #{tId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.pumch.web.model.Course">
+        update course
+        <set>
+            <if test="courseName != null">
+                course_name = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="tId != null">
+                t_id = #{tId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.pumch.web.model.Course">
+        update course
+        set course_name = #{courseName,jdbcType=VARCHAR},
+          t_id = #{tId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 手动添加 -->
+    <select id="selectByConditionsInPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from course
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="nickName != null">
+                course_name LIKE #{courseName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
+    </select>
+
+    <select id="selectCountByCondition" resultType="java.lang.Integer">
+        select count(id)
+        from course
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="nickName != null">
+                course_name LIKE #{courseName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>
