@@ -7,6 +7,8 @@ public class Course {
 
     private Long tId;
 
+    private String tName;
+
     public Long getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class Course {
 
     public void settId(Long tId) {
         this.tId = tId;
+    }
+
+    public String gettName() {
+        return tName;
+    }
+
+    public void settName(String tName) {
+        this.tName = tName;
     }
 }

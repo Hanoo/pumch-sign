@@ -72,21 +72,23 @@
     <!-- 手动添加 -->
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        course.id, course.course_name, IFNULL(ps_user.nick_name,"暂无") as tName
         from course
+        LEFT JOIN ps_user on course.t_id=ps_user.id
         <trim prefix="where" prefixOverrides="AND">
-            <if test="nickName != null">
-                course_name LIKE #{courseName,jdbcType=VARCHAR}
+            <if test="courseName != null">
+                course.course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
         </trim>
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
 
     <select id="selectCountByCondition" resultType="java.lang.Integer">
-        select count(id)
+        select count(course.id)
         from course
+        LEFT JOIN ps_user on course.t_id=ps_user.id
         <trim prefix="where" prefixOverrides="AND">
-            <if test="nickName != null">
+            <if test="courseName != null">
                 course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
         </trim>

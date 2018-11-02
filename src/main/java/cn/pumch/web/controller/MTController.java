@@ -144,7 +144,7 @@ public class MTController {
 
     @RequestMapping(value = "/courseList", method = RequestMethod.GET)
     public String courseListPage() {
-        return "course";
+        return "courseList";
     }
 
     @RequestMapping(value = "/courseList", method = RequestMethod.POST)
@@ -168,10 +168,9 @@ public class MTController {
             }
         }
 
-        Object courseNameInP = queryParam.get("courseName");
-        String courseName = null;
-        if(null!=courseNameInP) {
-            courseName = courseNameInP.toString();
+        String courseName = queryParam.getString("courseName");
+        if(StringUtils.isEmpty(courseName)) {
+            courseName = null;
         }
 
         List<Course> dataList = courseService.getCoursesByConditionsInPage(page, pageSize, courseName);

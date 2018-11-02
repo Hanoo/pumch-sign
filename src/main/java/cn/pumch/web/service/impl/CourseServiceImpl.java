@@ -25,13 +25,19 @@ public class CourseServiceImpl implements CourseService {
             pageSize = 10;
         }
         start = (page -1) * pageSize;
+        if(null!=courseName) {
+            courseName = "%" + courseName + "%";
+        }
         return courseMapper.selectByConditionsInPage(courseName, start, pageSize);
     }
 
     @Override
     public int getCoursesCountByCondition(String courseName) {
-        if(!StringUtils.isEmpty(courseName)) {
+        if("".equals(courseName)) {
             return 0;
+        }
+        if(null!=courseName) {
+            courseName = "%" + courseName + "%";
         }
         return courseMapper.selectCountByCondition(courseName);
     }
