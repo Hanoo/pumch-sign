@@ -2,6 +2,7 @@ package cn.pumch.web.service.impl;
 
 import cn.pumch.core.generic.GenericServiceImpl;
 import cn.pumch.web.dao.PsUserMapper;
+import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.core.generic.GenericDao;
 import cn.pumch.web.service.PsUserService;
@@ -62,7 +63,7 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
 
     @Override
     public List<PsUser> findByConditionsInPage(int page, int pageSize, String nickName,
-                                               String sex, String idNo, String state, Date startTime, Date endTime) {
+                                               String sex, String idNo, String state, UserType userType, Date startTime, Date endTime) {
         int start;
         if(page<1) {
             page = 1;
@@ -72,13 +73,33 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
         }
         start = (page -1) * pageSize;
 
-        return mapper.selectByConditionsInPage(nickName, sex, idNo, state, startTime, endTime, start, pageSize);
+        return mapper.selectByConditionsInPage(nickName, sex, idNo, state, startTime, endTime, userType.getRole_name(), start, pageSize);
     }
 
     @Override
     public int findByConditionsQuantity(String loginName, String sex,
-                                        String idNo, String state, Date startTime, Date endTime) {
-        return mapper.selectCountByConditions(loginName, sex, idNo, state, startTime, endTime);
+                                        String idNo, String state, UserType userType, Date startTime, Date endTime) {
+        return mapper.selectCountByConditions(loginName, sex, idNo, state, userType.getRole_name(), startTime, endTime);
+    }
+
+    @Override
+    public List<PsUser> findStudentsInPage(int page, int pageSize, String loginName, String sex, String idNo, String state, Date startTime, Date endTime) {
+        return this.findByConditionsInPage(page, pageSize, loginName, sex, idNo, state, UserType.S, startTime, endTime);
+    }
+
+    @Override
+    public int findStudentsCount(String loginName, String sex, String idNo, String state, Date startTime, Date endTime) {
+        return this.findByConditionsQuantity(loginName, sex, idNo, state, UserType.S, startTime, endTime);
+    }
+
+    @Override
+    public List<PsUser> findTeachersInPage(int page, int pageSize, String loginName, String sex, String idNo, String state, Date startTime, Date endTime) {
+        return this.findByConditionsInPage(page, pageSize, loginName, sex, idNo, state, UserType.T, startTime, endTime);
+    }
+
+    @Override
+    public int findTeachersCount(String loginName, String sex, String idNo, String state, Date startTime, Date endTime) {
+        return this.findByConditionsQuantity(loginName, sex, idNo, state, UserType.T, startTime, endTime);
     }
 
     @Override

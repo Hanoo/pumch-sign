@@ -1,6 +1,7 @@
 package cn.pumch.web.controller;
 
 import cn.pumch.core.util.JsonDateValueProcessor;
+import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.service.PsUserService;
@@ -63,9 +64,15 @@ public class MTController {
         return "";
     }
 
-    @RequestMapping(value = "/userList", method = RequestMethod.GET)
-    public String userListPage() {
-        return "userList";
+    @RequestMapping(value = "/sList", method = RequestMethod.GET)
+    public String studentsListPage() {
+        return "sList";
+    }
+
+
+    @RequestMapping(value = "/tList", method = RequestMethod.GET)
+    public String teacherListPage() {
+        return "tList";
     }
 
     @RequestMapping(value = "/userList", method = RequestMethod.POST)
@@ -78,6 +85,7 @@ public class MTController {
         Object startTime = queryParam.get("startTime");
         Object endTime = queryParam.get("endTime");
         String state = queryParam.getString("state");
+        String userType = queryParam.getString("userType");
 
         Date startDate = null;
         Date endDate = null;
@@ -116,8 +124,15 @@ public class MTController {
             jsonObject.put("error", "Invalid Args");
             return jsonObject;
         }
-        List<PsUser> dataList = userService.findByConditionsInPage(page, pageSize, nickName, null, null, state, startDate, endDate);
-        int totalRecord = userService.findByConditionsQuantity(nickName, null, null, state, startDate, endDate);
+        List<PsUser> dataList;
+        int totalRecord;
+        if(UserType.S.getRole_name().equals(userType)) {
+            dataList = userService.findStudentsInPage(page, pageSize, nickName, null, null, state, startDate, endDate);
+            totalRecord = userService.findStudentsCount(nickName, null, null, state, startDate, endDate);
+        } else {
+            dataList = userService.findTeachersInPage(page, pageSize, nickName, null, null, state, startDate, endDate);
+            totalRecord = userService.findTeachersCount(nickName, null, null, state, startDate, endDate);
+        }
         jsonObject.put("totalRecord", totalRecord);
 
         JsonConfig jsonConfig = new JsonConfig();

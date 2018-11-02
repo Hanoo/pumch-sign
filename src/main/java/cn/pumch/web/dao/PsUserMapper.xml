@@ -146,54 +146,60 @@
 
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from ps_user
-        <trim prefix="where" prefixOverrides="AND">
-            <if test="nickName != null">
-                nick_name LIKE #{nickName,jdbcType=VARCHAR}
-            </if>
-            <if test="sex != null">
-                AND sex = #{sex,jdbcType=CHAR}
-            </if>
-            <if test="idNo != null">
-                AND id_no LIKE #{idNo,jdbcType=VARCHAR}
-            </if>
-            <if test="uState !=null">
-                AND u_state = #{uState,jdbcType=VARCHAR}
-            </if>
-            <if test="startTime != null">
-                AND login_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND login_time &lt;= #{endTime}
-            </if>
-        </trim>
-        order by login_time desc
+        ps_user.id, ps_user.login_name, ps_user.nick_name, ps_user.sex, ps_user.id_no, ps_user.u_state, ps_user.create_time, ps_user.login_time
+        from ps_user, user_role, role
+        where ps_user.id=user_role.user_id
+        and user_role.role_id=role.id
+        <if test="roleName != null">
+            AND role.role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="nickName != null">
+            AND ps_user.nick_name LIKE #{nickName,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null">
+            AND ps_user.sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="idNo != null">
+            AND ps_user.id_no LIKE #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="uState !=null">
+            AND ps_user.u_state = #{uState,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null">
+            AND ps_user.login_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND ps_user.login_time &lt;= #{endTime}
+        </if>
+        order by ps_user.login_time desc
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
 
     <select id="selectCountByConditions" resultType="java.lang.Integer">
-        select count(id)
-        from ps_user
-        <trim prefix="where" prefixOverrides="AND">
-            <if test="nickName != null">
-                nick_name LIKE #{nickName,jdbcType=VARCHAR}
-            </if>
-            <if test="sex != null">
-                AND sex = #{sex,jdbcType=CHAR}
-            </if>
-            <if test="idNo != null">
-                AND id_no LIKE #{idNo,jdbcType=VARCHAR}
-            </if>
-            <if test="uState !=null">
-                AND u_state = #{uState,jdbcType=VARCHAR}
-            </if>
-            <if test="startTime != null">
-                AND login_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND login_time &lt;= #{endTime}
-            </if>
-        </trim>
+        select count(ps_user.id)
+        from ps_user, user_role, role
+        where ps_user.id=user_role.user_id
+        and user_role.role_id=role.id
+        <if test="roleName != null">
+            AND role.role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="nickName != null">
+            AND ps_user.nick_name LIKE #{nickName,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null">
+            AND ps_user.sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="idNo != null">
+            AND ps_user.id_no LIKE #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="uState !=null">
+            AND ps_user.u_state = #{uState,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null">
+            AND ps_user.login_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND ps_user.login_time &lt;= #{endTime}
+        </if>
     </select>
 </mapper>

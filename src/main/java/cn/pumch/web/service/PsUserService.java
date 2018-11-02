@@ -1,6 +1,7 @@
 package cn.pumch.web.service;
 
 import cn.pumch.core.generic.GenericService;
+import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.PsUser;
 
 import java.util.Date;
@@ -45,14 +46,70 @@ public interface PsUserService extends GenericService<PsUser, Long> {
      * 根据条件获取用户列表
      */
     List<PsUser> findByConditionsInPage(int page, int pageSize, String loginName, String sex,
-                                        String idNo, String state, Date startTime, Date endTime);
+                                        String idNo, String state, UserType userType, Date startTime, Date endTime);
 
     /**
      * 获取用户总数
      * @return
      */
     int findByConditionsQuantity(String loginName, String sex,
-                                 String idNo, String state, Date startTime, Date endTime);
+                                 String idNo, String state ,UserType userType, Date startTime, Date endTime);
+
+    /**
+     * 查询学生列表
+     * @param page
+     * @param pageSize
+     * @param loginName
+     * @param sex
+     * @param idNo
+     * @param state
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<PsUser> findStudentsInPage(int page, int pageSize, String loginName, String sex,
+                                    String idNo, String state, Date startTime, Date endTime);
+
+    /**
+     * 查询学生数量
+     * @param loginName
+     * @param sex
+     * @param idNo
+     * @param state
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    int findStudentsCount(String loginName, String sex,
+                                    String idNo, String state, Date startTime, Date endTime);
+
+    /**
+     * 查询教师列表
+     * @param page
+     * @param pageSize
+     * @param loginName
+     * @param sex
+     * @param idNo
+     * @param state
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<PsUser> findTeachersInPage(int page, int pageSize, String loginName, String sex,
+                                    String idNo, String state, Date startTime, Date endTime);
+
+    /**
+     * 查询教师数量
+     * @param loginName
+     * @param sex
+     * @param idNo
+     * @param state
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    int findTeachersCount(String loginName, String sex,
+                          String idNo, String state, Date startTime, Date endTime);
 
     /**
      * 更新用户信息

@@ -38,8 +38,8 @@
     <div class="row">
         <div class="sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="yonghuchaxun.html"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
-                <li><a href="yonghuchaxun.html"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
+                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
+                <li><a href="/mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
                 <li><a href="/mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
             </ul>
         </div>
@@ -135,7 +135,7 @@
             dir : "assets/lay/" //layui.js 所在路径
         });
 
-        var queryParam={};
+        var queryParam={"userType":"s"};
         var vue = {};
         vue.initialize = function() {
             queryParam.nickName="";

@@ -47,6 +47,7 @@ public interface PsUserMapper extends GenericDao<PsUser, Long> {
                                           @Param("uState") String state,
                                           @Param("startTime") Date startTime,
                                           @Param("endTime") Date endTime,
+                                          @Param("roleName") String roleName,
                                           @Param("start") int start,
                                           @Param("count") int count);
 
@@ -64,6 +65,7 @@ public interface PsUserMapper extends GenericDao<PsUser, Long> {
                                 @Param("sex") String sex,
                                 @Param("idNo") String idNo,
                                 @Param("uState") String state,
+                                @Param("roleName") String roleName,
                                 @Param("startTime") Date startTime,
                                 @Param("endTime") Date endTime);
 

@@ -39,14 +39,14 @@
         <div class="sidebar">
             <ul class="nav nav-sidebar">
                 <li><a href="/mt/sList"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
-                <li><a href="/mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
-                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
+                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
+                <li><a href="/mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
             </ul>
         </div>
         <div class="col-md-12 main ">
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
-                <li class="active"><a href="javascript:void(0);">用户查询</a></li>
+                <li class="active"><a href="javascript:void(0);">教师用户查询</a></li>
             </ol>
             <div class="row main2 col-md-12">
                 <h1 class="sub-header condition pull-left">查询条件</h1>
@@ -54,16 +54,28 @@
                     <a class="btn btn-primary btn-chaxun" href="javascript:void(0);" role="button">
                         <img class="menu-icon" src="assets/image/search.png" width="13">查询
                     </a>
-                    <a class="btn btn-default btn-reset" href="javascript:void(0);" role="button">
-                        <img class="menu-icon" src="assets/image/Cancel.png" width="13">重置
+                    <a class="btn btn-default" href="#" role="button">
+                        <img class="menu-icon" src="assets/image/Cancel.png" width="13">取消
                     </a>
                 </div>
                 <hr class="clearfix">
                 <div class="col-md-4 ">
                     <div class="form-group">
-                        <label  class="col-sm-3 control-label text-right text-list">课程名称：</label>
+                        <label  class="col-sm-3 control-label text-right text-list">姓名：</label>
                         <div class="col-sm-7">
-                            <input type="text" id="courseName" class="form-control input2" placeholder="">
+                            <input type="text" id="nickName" class="form-control input2" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label text-right text-list">状态：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control input2" id="state">
+                                <option>请选择状态</option>
+                                <option>在籍</option>
+                                <option>毕业</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -74,8 +86,8 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>--%>
-                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>--%>
+                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>
+                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>
             </div>
 
             <hr class="clearfix">
@@ -84,16 +96,22 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>课程名称</th>
-                        <th>任课教师</th>
+                        <th>登录名</th>
+                        <th>姓名</th>
+                        <th>身份证号</th>
+                        <th>入学时间</th>
+                        <th>状态</th>
                     </tr>
                     </thead>
                     <tbody>
                         <template v-if="data&&data.length>0">
                             <tr role="row" id="1" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" v-for="(record, index) in data">
                                 <td role="gridcell" aria-describedby="grid-table_id">{{index+1}}</td>
-                                <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
-                                <td role="gridcell" aria-describedby="grid-table_note">{{record.tName}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_stock">{{record.loginName}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_note">{{record.nickName}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_ship">{{record.idNo}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_ship">{{record.createTime}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_sdate">{{record.uState}}</td>
                             </tr>
                         </template>
                     </tbody>
@@ -103,7 +121,6 @@
             <div class="pull-right" id="pageCtrl"></div>
         </div>
     </div>
-
 </div>
 </body>
 </html>
@@ -118,10 +135,13 @@
             dir : "assets/lay/" //layui.js 所在路径
         });
 
-        var queryParam={};
+        var queryParam={"userType":"t"};
         var vue = {};
         vue.initialize = function() {
-            queryParam.courseName="";
+            queryParam.nickName="";
+            queryParam.state="1";
+            queryParam.startTime="";
+            queryParam.endTime="";
             // 翻页必须参数
             queryParam.pageSize=10;
             queryParam.currentPageIndex=1;
@@ -145,7 +165,7 @@
         vue.request = function() {
             $.ajax({
                 type: 'post', // 提交方式 get/post
-                url: '${pageContext.request.contextPath}/mt/courseList', // 需要提交的 url
+                url: '${pageContext.request.contextPath}/mt/userList', // 需要提交的 url
                 contentType: 'application/json;charset=UTF-8',
                 data:JSON.stringify(queryParam),
                 dataType: "json",
@@ -221,12 +241,11 @@
         vue.initialize();
 
         $(".btn-chaxun").on("click", function doQuery() {
-            queryParam.courseName=$("#courseName").val();
+            queryParam.nickName=$("#nickName").val();
+            queryParam.state=$("#state").val();
+            queryParam.startTime="";
+            queryParam.endTime="";
             vue.request();
-        });
-
-        $(".btn-reset").on("click", function () {
-            $("#courseName").val("");
         });
 
     });
