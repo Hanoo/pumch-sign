@@ -1,82 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.pumch.web.dao.SignInMapper">
-  <resultMap id="BaseResultMap" type="cn.pumch.web.model.SignIn">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="course_id" jdbcType="BIGINT" property="courseId" />
-    <result column="signer_id" jdbcType="BIGINT" property="signerId" />
-    <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, course_id, signer_id, sign_in_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from sign_in
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sign_in
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="cn.pumch.web.model.SignIn">
-    insert into sign_in (id, course_id, signer_id, 
-      sign_in_time)
-    values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT}, 
-      #{signInTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.pumch.web.model.SignIn">
-    insert into sign_in
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="courseId != null">
-        course_id,
-      </if>
-      <if test="signerId != null">
-        signer_id,
-      </if>
-      <if test="signInTime != null">
-        sign_in_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="courseId != null">
-        #{courseId,jdbcType=BIGINT},
-      </if>
-      <if test="signerId != null">
-        #{signerId,jdbcType=BIGINT},
-      </if>
-      <if test="signInTime != null">
-        #{signInTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.pumch.web.model.SignIn">
-    update sign_in
-    <set>
-      <if test="courseId != null">
-        course_id = #{courseId,jdbcType=BIGINT},
-      </if>
-      <if test="signerId != null">
-        signer_id = #{signerId,jdbcType=BIGINT},
-      </if>
-      <if test="signInTime != null">
-        sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.pumch.web.model.SignIn">
-    update sign_in
-    set course_id = #{courseId,jdbcType=BIGINT},
-      signer_id = #{signerId,jdbcType=BIGINT},
-      sign_in_time = #{signInTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="cn.pumch.web.model.SignIn">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="course_id" jdbcType="BIGINT" property="courseId"/>
+        <result column="signer_id" jdbcType="BIGINT" property="signerId"/>
+        <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, course_id, signer_id, sign_in_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sign_in
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sign_in
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.pumch.web.model.SignIn">
+        insert into sign_in (id, course_id, signer_id,
+          sign_in_time)
+        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
+          #{signInTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.pumch.web.model.SignIn">
+        insert into sign_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="signerId != null">
+                signer_id,
+            </if>
+            <if test="signInTime != null">
+                sign_in_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=BIGINT},
+            </if>
+            <if test="signerId != null">
+                #{signerId,jdbcType=BIGINT},
+            </if>
+            <if test="signInTime != null">
+                #{signInTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.pumch.web.model.SignIn">
+        update sign_in
+        <set>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=BIGINT},
+            </if>
+            <if test="signerId != null">
+                signer_id = #{signerId,jdbcType=BIGINT},
+            </if>
+            <if test="signInTime != null">
+                sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.pumch.web.model.SignIn">
+        update sign_in
+        set course_id = #{courseId,jdbcType=BIGINT},
+          signer_id = #{signerId,jdbcType=BIGINT},
+          sign_in_time = #{signInTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 以下内容为手动添加 -->
+    <select id="selectByTIdInPage" resultMap="BaseResultMap">
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name
+        from sign_in, course, ps_user
+        where signer_id=ps_user.id and course.id=sign_in.course_id
+        AND course.t_id = #{tId, jdbcType=BIGINT}
+        <if test="courseName != null">
+            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+        </if>
+        <if test="sName != null">
+            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+        </if>
+        ORDER BY sign_in.sign_in_time DESC
+        limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
+    </select>
+    <select id="selectCountByTId" resultType="java.lang.Integer">
+        select count(sign_in.id)
+        from sign_in, course, ps_user
+        where signer_id=ps_user.id and course.id=sign_in.course_id
+        AND course.t_id = #{tId, jdbcType=BIGINT}
+        <if test="courseName != null">
+            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+        </if>
+        <if test="sName != null">
+            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+        </if>
+    </select>
 </mapper>

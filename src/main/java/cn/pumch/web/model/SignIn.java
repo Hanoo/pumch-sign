@@ -11,6 +11,10 @@ public class SignIn {
 
     private Date signInTime;
 
+    private String nickName;
+
+    private String courseName;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +45,21 @@ public class SignIn {
 
     public void setSignInTime(Date signInTime) {
         this.signInTime = signInTime;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }

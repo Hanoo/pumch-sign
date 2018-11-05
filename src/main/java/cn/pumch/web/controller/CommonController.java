@@ -63,17 +63,19 @@ public class CommonController {
             if (!subject.isAuthenticated()) {
                 // 身份验证
                 subject.login(new UsernamePasswordToken(loginName, password));
-                if(subject.hasRole("mt")) {
-                    jump = "/mt/sList";
-                } else if (subject.hasRole("t")) {
-                    jump = "t";
-                }
                 // 验证成功在Session中保存用户信息
                 PsUser authUserInfo = userService.getUserByLoginName(loginName);
                 request.getSession().setAttribute("userInfo", authUserInfo);
                 authUserInfo.setLoginTime(new Date());
                 userService.update(authUserInfo);
             } // 已经登录直接跳转
+            if(subject.hasRole("mt")) {
+                jump = "/mt/sList";
+            } else if (subject.hasRole("t")) {
+                jump = "/t/mySignIn";
+            } else if (subject.hasRole("s")) {
+                jump = "/s/";
+            }
         } catch (AuthenticationException e) {
             // 身份验证失败
             logger.error("用户验证失败，用户名：" + loginName, e);

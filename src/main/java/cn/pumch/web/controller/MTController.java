@@ -6,6 +6,7 @@ import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
+import cn.pumch.web.util.CommonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -135,24 +136,7 @@ public class MTController {
         }
         jsonObject.put("totalRecord", totalRecord);
 
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateValueProcessor("yyyy-MM-dd HH:mm"));
-        PropertyFilter filter = new PropertyFilter() {
-            public boolean apply(Object object, String fieldName, Object fieldValue) {
-                if(fieldValue instanceof List){
-                    @SuppressWarnings("unchecked")
-                    List<Object> list = (List<Object>) fieldValue;
-                    if (list.size()==0) {
-                        return true;
-                    }
-                }
-                //过滤条件：值为null时过滤
-                return null == fieldValue;
-            }
-        };
-        jsonConfig.setJsonPropertyFilter(filter);
-
-        jsonObject.put("data", JSONArray.fromObject(dataList, jsonConfig));
+        jsonObject.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
 
         return jsonObject;
     }
