@@ -34,7 +34,7 @@ public class TController {
 
     @RequestMapping(value = "/mySignIn", method = RequestMethod.GET)
     public String mySignIn() {
-        return "mySignIn";
+        return "tMySignInLIst";
     }
 
     @RequestMapping(value = "/signInList", method = RequestMethod.POST)
@@ -78,14 +78,15 @@ public class TController {
             if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
                 endTime = sdf.parse(queryParam.getString("endTime"));
             }
-            List<SignIn> dataList = signInService.getMySignInInPage(page, pageSize, psUser.getId(), courseName, sName);
-            int totalRecord = signInService.getMySignInCount(psUser.getId(), courseName, sName);
+            List<SignIn> dataList = signInService.getTSignInListInPage(page, pageSize, psUser.getId(), courseName, sName);
+            int totalRecord = signInService.getTSignInCount(psUser.getId(), courseName, sName);
 
             queryParam.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
             queryParam.put("totalRecord", totalRecord);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        logger.debug("查询签到列表成功！");
         return queryParam;
     }
 

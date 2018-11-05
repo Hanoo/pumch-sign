@@ -16,7 +16,7 @@ public class SignInServiceImpl implements SignInService {
     private SignInMapper signInMapper;
 
     @Override
-    public List<SignIn> getMySignInInPage(int page, int pageSize, Long tId,
+    public List<SignIn> getTSignInListInPage(int page, int pageSize, Long tId,
                                           String courseName, String sName) {
         int start;
         if(page<1) {
@@ -39,7 +39,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public int getMySignInCount(Long tId, String courseName, String sName) {
+    public int getTSignInCount(Long tId, String courseName, String sName) {
         if(StringUtils.isNotEmpty(courseName)) {
             courseName = "%" + courseName + "%";
         }
@@ -49,5 +49,38 @@ public class SignInServiceImpl implements SignInService {
         }
 
         return signInMapper.selectCountByTId(tId, courseName, sName);
+    }
+
+    @Override
+    public List<SignIn> getSSignInListInPage(int page, int pageSize, Long signerId, String courseName, String sName) {
+        int start;
+        if(page<1) {
+            page = 1;
+        }
+        if(pageSize<10) {
+            pageSize = 10;
+        }
+        start = (page -1) * pageSize;
+
+        if(StringUtils.isNotEmpty(courseName)) {
+            courseName = "%" + courseName + "%";
+        }
+
+        if(StringUtils.isNotEmpty(sName)) {
+            sName = "%" + sName + "%";
+        }
+        return signInMapper.selectBySIdInPage(start, pageSize, signerId, courseName, sName);
+    }
+
+    @Override
+    public int getSSignInCount(Long signerId, String courseName, String sName) {
+        if(StringUtils.isNotEmpty(courseName)) {
+            courseName = "%" + courseName + "%";
+        }
+
+        if(StringUtils.isNotEmpty(sName)) {
+            sName = "%" + sName + "%";
+        }
+        return signInMapper.selectCountBySId(signerId, courseName, sName);
     }
 }

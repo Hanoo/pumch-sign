@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SignInService {
     /**
-     * 查询我的签到列表
+     * 根据教师ID查询任课课程签到列表
      * @param page
      * @param pageSize
      * @param tId
@@ -15,14 +15,34 @@ public interface SignInService {
      * @param sName
      * @return
      */
-    List<SignIn> getMySignInInPage(int page, int pageSize, Long tId, String courseName, String sName);
+    List<SignIn> getTSignInListInPage(int page, int pageSize, Long tId, String courseName, String sName);
 
     /**
-     * 查询我的签到数量
+     * 根据教师ID查询任课课程签到数量
      * @param tId
      * @param courseName
      * @param sName
      * @return
      */
-    int getMySignInCount(Long tId, String courseName, String sName);
+    int getTSignInCount(Long tId, String courseName, String sName);
+
+    /**
+     * 根据学生ID查询任课课程签到列表
+     * @param page
+     * @param pageSize
+     * @param signerId
+     * @param courseName
+     * @param sName
+     * @return
+     */
+    List<SignIn> getSSignInListInPage(int page, int pageSize, Long signerId, String courseName, String sName);
+
+    /**
+     * 根据学生ID查询任课课程签到数量
+     * @param signerId
+     * @param courseName
+     * @param sName
+     * @return
+     */
+    int getSSignInCount(Long signerId, String courseName, String sName);
 }

@@ -84,7 +84,7 @@
     <select id="selectByTIdInPage" resultMap="BaseResultMap">
         select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name
         from sign_in, course, ps_user
-        where signer_id=ps_user.id and course.id=sign_in.course_id
+        where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND course.t_id = #{tId, jdbcType=BIGINT}
         <if test="courseName != null">
             course.course_name LIKE #{courseName,jdbcType=VARCHAR},
@@ -98,8 +98,35 @@
     <select id="selectCountByTId" resultType="java.lang.Integer">
         select count(sign_in.id)
         from sign_in, course, ps_user
-        where signer_id=ps_user.id and course.id=sign_in.course_id
+        where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND course.t_id = #{tId, jdbcType=BIGINT}
+        <if test="courseName != null">
+            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+        </if>
+        <if test="sName != null">
+            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+        </if>
+    </select>
+
+    <select id="selectBySIdInPage" resultMap="BaseResultMap">
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name
+        from sign_in, course, ps_user
+        where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
+        AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
+        <if test="courseName != null">
+            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+        </if>
+        <if test="sName != null">
+            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+        </if>
+        ORDER BY sign_in.sign_in_time DESC
+        limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
+    </select>
+    <select id="selectCountBySId" resultType="java.lang.Integer">
+        select count(sign_in.id)
+        from sign_in, course, ps_user
+        where signer_id=ps_user.id and course.id=sign_in.course_id
+        AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
         <if test="courseName != null">
             course.course_name LIKE #{courseName,jdbcType=VARCHAR},
         </if>
