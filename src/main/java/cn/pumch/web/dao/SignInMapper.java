@@ -3,6 +3,7 @@ package cn.pumch.web.dao;
 import cn.pumch.web.model.SignIn;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SignInMapper {
@@ -69,4 +70,16 @@ public interface SignInMapper {
     int selectCountBySId(@Param("signerId") Long signerId,
                          @Param("courseName") String courseName,
                          @Param("sName") String sName);
+
+    /**
+     * 根据时间区间查询签到
+     * @param startTim 开始时间
+     * @param endTime 结束时间
+     * @param signerId 签到人ID
+     * @return
+     */
+    List<SignIn> selectByDate(@Param("signerId") Long signerId,
+                              @Param("courseId") Long courseId,
+                              @Param("startTime") Date startTim,
+                              @Param("endTime") Date endTime);
 }

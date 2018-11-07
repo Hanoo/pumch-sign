@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -82,5 +84,33 @@ public class SignInServiceImpl implements SignInService {
             sName = "%" + sName + "%";
         }
         return signInMapper.selectCountBySId(signerId, courseName, sName);
+    }
+
+    @Override
+    public boolean doSignIn(Long signerId, Long courseId) {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 6);
+        Date startTime = today.getTime();
+        today.set(Calendar.HOUR_OF_DAY,21);
+        Date endTime = today.getTime();
+        List<SignIn> signIns = this.getSignInListByDate(signerId, courseId, startTime, endTime);
+        if(signIns.size()>0) {//已经签到成功直接返回成功
+            return true;
+        } else {
+            SignIn signIn = new SignIn();
+            signIn.setSignerId(signerId);
+            signIn.setCourseId(courseId);
+            signIn.setSignInTime(new Date());
+
+            return signInMapper.insertSelective(signIn)>0;
+        }
+    }
+
+    @Override
+    public List<SignIn> getSignInListByDate(Long signerId, Long courseId, Date startTime, Date endTime) {
+        if(null==startTime || null==endTime) {
+            return null;
+        }
+        return signInMapper.selectByDate(signerId, courseId, startTime, endTime);
     }
 }

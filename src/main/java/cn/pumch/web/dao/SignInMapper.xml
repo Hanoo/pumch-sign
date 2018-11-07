@@ -134,4 +134,14 @@
             ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
         </if>
     </select>
+
+    <select id="selectByDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sign_in
+        where signer_id = #{signerId,jdbcType=BIGINT}
+        AND course_id = #{courseId,jdbcType=BIGINT}
+        AND sign_in_time > #{startTime,jdbcType=TIMESTAMP}
+        AND sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

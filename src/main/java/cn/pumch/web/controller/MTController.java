@@ -43,22 +43,6 @@ public class MTController {
     private CourseService courseService;
 
     private final static Logger logger = LoggerFactory.getLogger(MTController.class);
-    /**
-     * 用户登出
-     *
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpSession session) {
-        PsUser userInfo = (PsUser) session.getAttribute("userInfo");
-        session.removeAttribute("userInfo");
-        // 登出操作
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        logger.info("用户"+userInfo.getLoginName()+"登出成功！");
-        return "login";
-    }
 
     @RequestMapping(value = "/crusr", method = RequestMethod.POST)
     public String createUser(){

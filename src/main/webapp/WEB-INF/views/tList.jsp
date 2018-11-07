@@ -28,7 +28,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="sys-a"><span><img src="assets/image/tx2.jpg">${userInfo.nickName}</span></li>
-                <li><a  class="list" href="/mt/logout">退出</a></li>
+                <li><a  class="list" href="logout">退出</a></li>
             </ul>
         </div>
     </div>

@@ -2,6 +2,7 @@ package cn.pumch.web.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.service.PsUserService;
@@ -106,6 +107,23 @@ public class CommonController {
     public String error(@PathVariable String eCode, HttpServletRequest request) {
         request.setAttribute("eCode", eCode);
         return "error";
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) {
+        PsUser userInfo = (PsUser) session.getAttribute("userInfo");
+        session.removeAttribute("userInfo");
+        // 登出操作
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        logger.info("用户"+userInfo.getLoginName()+"登出成功！");
+        return "login";
     }
 
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);

@@ -3,6 +3,7 @@ package cn.pumch.web.service;
 
 import cn.pumch.web.model.SignIn;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SignInService {
@@ -45,4 +46,21 @@ public interface SignInService {
      * @return
      */
     int getSSignInCount(Long signerId, String courseName, String sName);
+
+    /**
+     * 学生签到
+     * @param signerId
+     * @param courseId
+     * @return
+     */
+    boolean doSignIn(Long signerId, Long courseId);
+
+    /**
+     * 根据时间区间查询指定学生、指定课程的签到情况
+     * @param signerId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<SignIn> getSignInListByDate(Long signerId, Long courseId, Date startTime, Date endTime);
 }
