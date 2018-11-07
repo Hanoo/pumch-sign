@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -90,5 +87,14 @@ public class SController {
         logger.debug("查询签到列表成功！");
         return queryParam;
     }
+
+    @RequestMapping(value = "/signIn/{courseId}")
+    @ResponseBody
+    public String doSignIn(@PathVariable String courseId, HttpSession session) {
+        PsUser user = (PsUser) session.getAttribute("userInfo");
+        logger.info("学生" + user.getNickName() + "签到成功！");
+        return "success";
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(SController.class);
 }

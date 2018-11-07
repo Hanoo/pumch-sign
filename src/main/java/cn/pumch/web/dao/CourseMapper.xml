@@ -82,7 +82,6 @@
         </trim>
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
-
     <select id="selectCountByCondition" resultType="java.lang.Integer">
         select count(course.id)
         from course
@@ -92,5 +91,20 @@
                 course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
         </trim>
+    </select>
+
+    <select id="selectByTIdInPage" resultMap="BaseResultMap">
+        select
+        course.id, course.course_name, IFNULL(ps_user.nick_name,"暂无") as tName
+        from course
+        LEFT JOIN ps_user on course.t_id=ps_user.id
+        where course.t_id = #{tId, jdbcType=VARCHAR}
+        limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
+    </select>
+    <select id="selectCountByTId" resultType="java.lang.Integer">
+        select count(course.id)
+        from course
+        LEFT JOIN ps_user on course.t_id=ps_user.id
+        where course.t_id = #{tId, jdbcType=VARCHAR}
     </select>
 </mapper>

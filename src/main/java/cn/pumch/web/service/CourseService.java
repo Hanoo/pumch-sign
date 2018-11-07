@@ -21,4 +21,20 @@ public interface CourseService {
      * @return
      */
     int getCoursesCountByCondition(String courseName);
+
+    /**
+     * 查询指定教师的课程列表
+     * @param page
+     * @param pageSize
+     * @param tId
+     * @return
+     */
+    List<Course> getCourseByTIdInPage(int page, int pageSize, Long tId);
+
+    /**
+     * 查询指定教师的课程数量
+     * @param tId
+     * @return
+     */
+    int getCourseCountByTId(Long tId);
 }

@@ -19,10 +19,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,7 +71,7 @@ public class CommonController {
             } else if (subject.hasRole("t")) {
                 jump = "/t/mySignIn";
             } else if (subject.hasRole("s")) {
-                jump = "/s/";
+                jump = "/s/mySignList";
             }
         } catch (AuthenticationException e) {
             // 身份验证失败
@@ -103,6 +100,12 @@ public class CommonController {
 
         logger.info(loginName+" 登录成功。");
         return json;
+    }
+
+    @RequestMapping(value = "/web/error/{eCode}")
+    public String error(@PathVariable String eCode, HttpServletRequest request) {
+        request.setAttribute("eCode", eCode);
+        return "error";
     }
 
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);

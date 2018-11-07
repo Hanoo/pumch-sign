@@ -35,4 +35,22 @@ public interface CourseMapper {
      * @return
      */
     int selectCountByCondition(@Param("courseName") String courseName);
+
+    /**
+     * 查询指定教师的课程
+     * @param tId
+     * @param start
+     * @param count
+     * @return
+     */
+    List<Course> selectByTIdInPage(@Param("tId") Long tId,
+                                   @Param("start") int start,
+                                   @Param("count") int count);
+
+    /**
+     * 查询指定教师课程的数量
+     * @param tId
+     * @return
+     */
+    int selectCountByTId(@Param("tId") Long tId);
 }

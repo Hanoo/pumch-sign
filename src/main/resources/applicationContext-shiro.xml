@@ -34,6 +34,10 @@
                 <!-- 其他资源需要认证 -->
                 /mt/* = roles[mt]
                 /mt/** = roles[mt]
+                /t/* = roles[t]
+                /t/** = roles[t]
+                /s/* = roles[s]
+                /s/** = roles[s]
                 /** = authc
             </value>
         </property>

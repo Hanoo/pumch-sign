@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <h5 class="navbar-brand login-nav" ><a href="/"><img class="menu-icon" src="assets/image/logo.png" width="24">课程签到后台管理系统</a></h5>
+            <h5 class="navbar-brand login-nav"><a href="/"><img class="menu-icon" src="assets/image/logo.png" width="24">课程签到后台管理系统</a></h5>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -38,55 +38,28 @@
     <div class="row">
         <div class="sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Pen.png" width="16">签到查询</a></li>
-                <li><a href="t/courseList4T"><img class="menu-icon" src="assets/image/Users.png" width="16">课程列表</a></li>
+                <li><a href="t/mySignIn"><img class="menu-icon" src="assets/image/Pen.png" width="16">签到查询</a></li>
+                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">课程列表</a></li>
             </ul>
         </div>
         <div class="col-md-12 main ">
             <ol class="breadcrumb">
-                <li><a href="#">首页</a></li>
-                <li class="active"><a href="javascript:void(0);">教师用户查询</a></li>
+                <li><a href="javascript:void(0);">首页</a></li>
+                <li class="active"><a href="javascript:void(0);">我的课程列表</a></li>
             </ol>
-            <div class="row main2 col-md-12">
-                <h1 class="sub-header condition pull-left">查询条件</h1>
-                <div class="pull-right">
-                    <a class="btn btn-primary btn-chaxun" href="javascript:void(0);" role="button">
-                        <img class="menu-icon" src="assets/image/search.png" width="13">查询
-                    </a>
-                    <a class="btn btn-default" href="#" role="button">
-                        <img class="menu-icon" src="assets/image/Cancel.png" width="13">取消
-                    </a>
-                </div>
-                <hr class="clearfix">
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label  class="col-sm-3 control-label text-right text-list">姓名：</label>
-                        <div class="col-sm-7">
-                            <input type="text" id="nickName" class="form-control input2" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label text-right text-list">状态：</label>
-                        <div class="col-sm-8">
-                            <select class="form-control input2" id="state">
-                                <option>请选择状态</option>
-                                <option>在籍</option>
-                                <option>毕业</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <div class=" main mc">
+        <div class="main mc">
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>
+                <%--<a href="javascript:void(0);" class="btn btn-default"><img src="assets/image/Magnifier.png" width="13"></a>--%>
+                <button id="showQrCode" class="btn btn-primary" data-toggle="modal" data-target="#myModal" disabled>
+                    生成二维码
+                </button>
+                <button class="btn" id="test">
+                    测试按钮
+                </button>
             </div>
 
             <hr class="clearfix">
@@ -94,19 +67,21 @@
                 <table id="page-content" class="table table-striped table-hover">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>序号</th>
                         <th>课程名称</th>
-                        <th>签到人</th>
-                        <th>签到时间</th>
+                        <th>任课教师</th>
                     </tr>
                     </thead>
                     <tbody>
                         <template v-if="data&&data.length>0">
                             <tr role="row" id="1" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" v-for="(record, index) in data">
+                                <td role="gridcell" aria-describedby="grid-table_cb">
+                                    <input type="radio" class="cbox" :value="record.id" name="courseId" @click="enableButton">
+                                </td>
                                 <td role="gridcell" aria-describedby="grid-table_id">{{index+1}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
-                                <td role="gridcell" aria-describedby="grid-table_note">{{record.nickName}}</td>
-                                <td role="gridcell" aria-describedby="grid-table_ship">{{record.signInTime}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_note">{{record.tName}}</td>
                             </tr>
                         </template>
                     </tbody>
@@ -116,6 +91,27 @@
             <div class="pull-right" id="pageCtrl"></div>
         </div>
     </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        课程二维码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <img src="assets/image/logo.png" id="qrCodeDiv"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 </body>
 </html>
@@ -124,6 +120,7 @@
 <script src="assets/lay/layui.js"></script>
 <script src="assets/lay/lay/modules/laypage.js"></script>
 <script src="assets/js/vue.min.js?v=2.5.9"></script>
+<script src="assets/bootstrap/js/bootstrap.js"></script>
 <script>
     $(document).ready(function(){
         layui.config({
@@ -133,10 +130,7 @@
         var queryParam={};
         var vue = {};
         vue.initialize = function() {
-            queryParam.sName="";
             queryParam.courseName="";
-            queryParam.startTime="";
-            queryParam.endTime="";
             // 翻页必须参数
             queryParam.pageSize=10;
             queryParam.currentPageIndex=1;
@@ -160,7 +154,7 @@
         vue.request = function() {
             $.ajax({
                 type: 'post', // 提交方式 get/post
-                url: '${pageContext.request.contextPath}/t/signInList', // 需要提交的 url
+                url: '${pageContext.request.contextPath}/t/courseList4T', // 需要提交的 url
                 contentType: 'application/json;charset=UTF-8',
                 data:JSON.stringify(queryParam),
                 dataType: "json",
@@ -236,12 +230,26 @@
         vue.initialize();
 
         $(".btn-chaxun").on("click", function doQuery() {
-            queryParam.nickName=$("#nickName").val();
-            queryParam.state=$("#state").val();
-            queryParam.startTime="";
-            queryParam.endTime="";
+            queryParam.courseName=$("#courseName").val();
             vue.request();
         });
 
+        $(".btn-reset").on("click", function () {
+            $("#courseName").val("");
+        });
+
+        $("#test").on("click", function() {
+            alert($("input[name='courseId']:checked").val());
+        });
+
     });
+
+    function enableButton() {
+        var showQrCode = $("#showQrCode").attr("disabled");
+        if(showQrCode=='disabled') {
+            $("#showQrCode").attr("disabled", false);
+        }
+        var courseId = $("input[name='courseId']:checked").val();
+        $("#qrCodeDiv").attr("src", "t/qrCode/"+courseId);
+    };
 </script>

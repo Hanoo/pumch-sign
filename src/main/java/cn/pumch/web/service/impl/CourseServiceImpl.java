@@ -41,4 +41,29 @@ public class CourseServiceImpl implements CourseService {
         }
         return courseMapper.selectCountByCondition(courseName);
     }
+
+    @Override
+    public List<Course> getCourseByTIdInPage(int page, int pageSize, Long tId) {
+        if(null==tId) {
+            return null;
+        }
+
+        int start;
+        if(page<1) {
+            page = 1;
+        }
+        if(pageSize<10) {
+            pageSize = 10;
+        }
+        start = (page -1) * pageSize;
+        return courseMapper.selectByTIdInPage(tId, start, pageSize);
+    }
+
+    @Override
+    public int getCourseCountByTId(Long tId) {
+        if(null==tId) {
+            return 0;
+        }
+        return courseMapper.selectCountByTId(tId);
+    }
 }
