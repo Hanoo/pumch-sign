@@ -120,4 +120,12 @@ public interface PsUserService extends GenericService<PsUser, Long> {
      * 重置用户密码
      */
     boolean resetPwd(String userId);
+
+    /**
+     * 创建用户并关联角色
+     * @param user
+     * @param roleId
+     * @return
+     */
+    boolean createUser(PsUser user, Long roleId);
 }

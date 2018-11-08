@@ -26,4 +26,13 @@ public interface RoleService extends GenericService<Role, Long> {
      * @return
      */
     List<Role> selectRolesByOperId(Long userId);
+
+    /**
+     * 为用户添加角色
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    boolean userRoleAssociated(Long userId, Long roleId);
+
 }

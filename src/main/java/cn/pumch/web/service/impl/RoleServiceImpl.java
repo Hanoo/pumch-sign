@@ -37,4 +37,17 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
         return roleMapper.selectRolesByUserId(userId);
     }
 
+    @Override
+    public boolean userRoleAssociated(Long userId, Long roleId) {
+        if(userId>0&&roleId>0) {
+            return roleMapper.roleAssociated(userId, roleId)>0;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Role> selectList() {
+        return roleMapper.selectAll();
+    }
+
 }

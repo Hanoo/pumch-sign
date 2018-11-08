@@ -33,12 +33,9 @@
           #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{idNo,jdbcType=VARCHAR}, #{uState,jdbcType=VARCHAR},
           #{createTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="cn.pumch.web.model.PsUser">
+    <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="cn.pumch.web.model.PsUser">
         insert into ps_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="loginName != null">
                 login_name,
             </if>

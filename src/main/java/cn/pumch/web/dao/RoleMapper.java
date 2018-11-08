@@ -38,4 +38,25 @@ public interface RoleMapper extends GenericDao<Role, Long> {
      */
     List<Role> selectRolesByUserId(Long userId);
 
+    /**
+     * 用户关联角色
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    int roleAssociated(@Param("userId") Long userId, @Param("roleId") Long roleId);
+
+    /**
+     * 通过角色名查询角色ID
+     * @param roleName
+     * @return
+     */
+    Long selectRoleIdByName(@Param("roleName") String roleName);
+
+    /**
+     * 查询所有记录
+     * @return
+     */
+    List<Role> selectAll();
+
 }

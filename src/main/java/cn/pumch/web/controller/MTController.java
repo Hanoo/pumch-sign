@@ -1,19 +1,16 @@
 package cn.pumch.web.controller;
 
-import cn.pumch.core.util.JsonDateValueProcessor;
 import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
+import cn.pumch.web.model.Role;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
+import cn.pumch.web.service.RoleService;
 import cn.pumch.web.util.CommonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-import net.sf.json.util.PropertyFilter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,11 +39,42 @@ public class MTController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private RoleService roleService;
+
     private final static Logger logger = LoggerFactory.getLogger(MTController.class);
 
+    @RequestMapping(value = "/newUser", method = RequestMethod.GET)
+    public String newUser(HttpServletRequest request) {
+        List<Role> roleList = roleService.selectList();
+        request.setAttribute("roleList", JSONArray.fromObject(roleList));
+        return "newUser";
+    }
+
     @RequestMapping(value = "/crusr", method = RequestMethod.POST)
-    public String createUser(){
-        return "";
+    @ResponseBody
+    public JSONObject createUser(@RequestBody JSONObject queryParam){
+        String loginName = queryParam.getString("loginName");
+        String nickName = queryParam.getString("nickName");
+//        String sex = queryParam.getString("sex");
+        String idNo = queryParam.getString("idNo");
+        Long roleId = queryParam.getLong("roleId");
+
+        PsUser user = new PsUser();
+        user.setIdNo(idNo);
+        user.setNickName(nickName);
+        user.setLoginName(loginName);
+//        user.setSex(sex);
+
+        JSONObject result = new JSONObject();
+        if(userService.createUser(user, roleId)) {
+            logger.info("用户"+nickName+"创建成功！");
+            result.put("result", "success");
+        } else {
+            logger.warn("用户创建失败！");
+            result.put("result", "failed");
+        }
+        return result;
     }
 
     @RequestMapping(value = "/sList", method = RequestMethod.GET)

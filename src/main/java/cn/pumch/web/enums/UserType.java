@@ -25,6 +25,21 @@ public enum UserType {
         this.role_desc = role_desc;
     }
 
+    public static UserType getUserTypeByRoleName(String roleName) {
+        UserType userType;
+        switch (roleName) {
+            case "mt" :
+                userType = MT;
+                break;
+            case "t" :
+                userType = T;
+                break;
+            default:
+                userType = S;
+        }
+        return userType;
+    }
+
     private String role_name;
     private String role_desc;
 }

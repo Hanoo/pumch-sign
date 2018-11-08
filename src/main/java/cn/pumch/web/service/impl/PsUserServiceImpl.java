@@ -5,8 +5,13 @@ import cn.pumch.web.dao.PsUserMapper;
 import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.core.generic.GenericDao;
+import cn.pumch.web.model.Role;
 import cn.pumch.web.service.PsUserService;
+import cn.pumch.web.service.RoleService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -23,6 +28,12 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
 
     @Resource
     private PsUserMapper mapper;
+
+    @Resource
+    private RoleService roleService;
+
+    @Value("${user.password.default}")
+    private String defaultPassword;
 
     @Override
     public PsUser getUserByLoginName(String username) {
@@ -112,10 +123,21 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
     public boolean resetPwd(String userId) {
         PsUser psUser = new PsUser();
         psUser.setId(Long.valueOf(userId));
-        String defaultPwd = String.valueOf("pumch2018".hashCode());
+        String defaultPwd = String.valueOf(defaultPassword.hashCode());
         psUser.setPassword(defaultPwd);
 
         return mapper.updateByPrimaryKeySelective(psUser)>0;
+    }
+
+    @Override
+    @Transactional
+    public boolean createUser(PsUser user, Long roleId) {
+        user.setPassword(String.valueOf(defaultPassword.hashCode()));
+        user.setCreateTime(new Date());
+        user.setuState("1");
+        int result1 = mapper.insertSelective(user);
+        boolean result2 = roleService.userRoleAssociated(user.getId(), roleId);
+        return result1>0 && result2;
     }
 
     @Override

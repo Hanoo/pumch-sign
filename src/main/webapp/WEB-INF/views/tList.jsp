@@ -38,9 +38,10 @@
     <div class="row">
         <div class="sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="/mt/sList"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
+                <li><a href="mt/sList"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
                 <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
-                <li><a href="/mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
+                <li><a href="mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
+                <li><a href="mt/newUser"><img class="menu-icon" src="assets/image/Users.png" width="16">新建用户</a></li>
             </ul>
         </div>
         <div class="col-md-12 main ">

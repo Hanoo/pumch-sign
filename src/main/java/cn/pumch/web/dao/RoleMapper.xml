@@ -201,4 +201,15 @@
         WHERE ur.user_id = #{id,jdbcType=BIGINT}
     </select>
 
+    <!-- 用户关联角色 -->
+    <insert id="roleAssociated" >
+        INSERT INTO user_role (user_id, role_id)
+        VALUES (#{userId, jdbcType=BIGINT}, #{roleId, jdbcType=BIGINT})
+    </insert>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM role
+    </select>
 </mapper>

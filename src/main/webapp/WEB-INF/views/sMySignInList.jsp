@@ -44,7 +44,7 @@
         <div class="col-md-12 main ">
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
-                <li class="active"><a href="javascript:void(0);">教师用户查询</a></li>
+                <li class="active"><a href="javascript:void(0);">课程查询</a></li>
             </ol>
             <div class="row main2 col-md-12">
                 <h1 class="sub-header condition pull-left">查询条件</h1>
@@ -84,8 +84,9 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>
+                <a href="javascript:void(0);" class="btn btn-default ">
+                    <img src="assets/image/Magnifier.png" width="13">评分
+                </a>
             </div>
 
             <hr class="clearfix">
@@ -93,19 +94,25 @@
                 <table id="page-content" class="table table-striped table-hover">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>序号</th>
                         <th>课程名称</th>
                         <th>签到人</th>
                         <th>签到时间</th>
+                        <th>课程评分</th>
                     </tr>
                     </thead>
                     <tbody>
                         <template v-if="data&&data.length>0">
                             <tr role="row" id="1" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" v-for="(record, index) in data">
+                                <td role="gridcell" aria-describedby="grid-table_cb">
+                                    <input type="radio" class="cbox" :value="record.id" name="lessonId">
+                                </td>
                                 <td role="gridcell" aria-describedby="grid-table_id">{{index+1}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_note">{{record.nickName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_ship">{{record.signInTime}}</td>
+                                <td></td>
                             </tr>
                         </template>
                     </tbody>
@@ -159,7 +166,7 @@
         vue.request = function() {
             $.ajax({
                 type: 'post', // 提交方式 get/post
-                url: '${pageContext.request.contextPath}/t/signInList', // 需要提交的 url
+                url: '${pageContext.request.contextPath}/s/signList', // 需要提交的 url
                 contentType: 'application/json;charset=UTF-8',
                 data:JSON.stringify(queryParam),
                 dataType: "json",

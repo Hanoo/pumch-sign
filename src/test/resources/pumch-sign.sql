@@ -100,7 +100,8 @@ CREATE TABLE sign_in (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到表';
 
-CREATE TABLE course_score (
+CREATE TABLE
+(
   id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
   course_id    bigint(20) NOT NULL COMMENT '课程ID',
   scorer_id    bigint(20) NOT NULL COMMENT '评分人ID',
