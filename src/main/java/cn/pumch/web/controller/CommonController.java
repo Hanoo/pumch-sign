@@ -72,7 +72,21 @@ public class CommonController {
             } else if (subject.hasRole("t")) {
                 jump = "/t/mySignIn";
             } else if (subject.hasRole("s")) {
-                jump = "/s/mySignList";
+                SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+                String urlBeforeRedirect = null;
+                if (null != savedRequest) {
+                    urlBeforeRedirect = WebUtils.getSavedRequest(request).getRequestUrl();
+                }
+                if (!StringUtils.isNullOrEmpty(urlBeforeRedirect) && !urlBeforeRedirect.endsWith("logout")) {
+                    urlBeforeRedirect = urlBeforeRedirect.replace(request.getContextPath(), "");
+                    if (urlBeforeRedirect.length() > 2) {
+                        jump = urlBeforeRedirect;
+                    } else {
+                        jump = "/s/mySignList";
+                    }
+                } else {
+                    jump = "/s/mySignList";
+                }
             }
         } catch (AuthenticationException e) {
             // 身份验证失败
@@ -80,20 +94,6 @@ public class CommonController {
             json.put("result", "error");
             json.put("resultInfo", "用户名或密码错误！");
             return json;
-        }
-
-        SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-        String urlBeforeRedirect = null;
-        if (null != savedRequest) {
-            urlBeforeRedirect = WebUtils.getSavedRequest(request).getRequestUrl();
-        }
-        if (!StringUtils.isNullOrEmpty(urlBeforeRedirect) && !urlBeforeRedirect.endsWith("logout")) {
-            urlBeforeRedirect = urlBeforeRedirect.replace(request.getContextPath(), "");
-            if (urlBeforeRedirect.length() > 2) {
-                json.put("result", "success");
-                json.put("resultInfo", urlBeforeRedirect);
-                return json;
-            }
         }
 
         json.put("resultInfo", jump);

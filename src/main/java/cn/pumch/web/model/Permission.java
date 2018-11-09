@@ -1,12 +1,14 @@
 package cn.pumch.web.model;
 
+import java.io.Serializable;
+
 /**
  * 权限模型
  * 
  * @author StarZou
  * @since 2014年7月17日 下午1:02:55
  **/
-public class Permission {
+public class Permission implements Serializable {
     private Long id;
 
     private String permissionName;

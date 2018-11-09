@@ -1,8 +1,9 @@
 package cn.pumch.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PsUser {
+public class PsUser implements Serializable{
     private Long id;
 
     private String loginName;
