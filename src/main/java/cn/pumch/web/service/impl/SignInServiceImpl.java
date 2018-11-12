@@ -113,4 +113,17 @@ public class SignInServiceImpl implements SignInService {
         }
         return signInMapper.selectByDate(signerId, courseId, startTime, endTime);
     }
+
+    @Override
+    public boolean doScore(Long signInId, int score) {
+        if(signInId==0 || score==0) {
+            return false;
+        }
+        SignIn signIn = new SignIn();
+        signIn.setId(signInId);
+        signIn.setScore(score);
+        signIn.setScoreTime(new Date());
+
+        return signInMapper.updateByPrimaryKeySelective(signIn)>0;
+    }
 }

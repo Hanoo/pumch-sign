@@ -251,5 +251,5 @@
         }
         var courseId = $("input[name='courseId']:checked").val();
         $("#qrCodeDiv").attr("src", "t/qrCode/"+courseId);
-    };
+    }
 </script>

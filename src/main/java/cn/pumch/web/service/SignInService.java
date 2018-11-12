@@ -63,4 +63,12 @@ public interface SignInService {
      * @return
      */
     List<SignIn> getSignInListByDate(Long signerId, Long courseId, Date startTime, Date endTime);
+
+    /**
+     * 为签到的课程打分
+     * @param signInId 签到表主键
+     * @param score 分数
+     * @return
+     */
+    boolean doScore(Long signInId, int score);
 }

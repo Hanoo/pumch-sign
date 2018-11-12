@@ -15,6 +15,10 @@ public class SignIn {
 
     private String courseName;
 
+    private Date scoreTime;
+
+    private Integer score;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +65,21 @@ public class SignIn {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public Date getScoreTime() {
+        return scoreTime;
+    }
+
+    public void setScoreTime(Date scoreTime) {
+        this.scoreTime = scoreTime;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

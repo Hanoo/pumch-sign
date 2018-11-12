@@ -2,17 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.pumch.web.dao.SignInMapper">
     <resultMap id="BaseResultMap" type="cn.pumch.web.model.SignIn">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="course_id" jdbcType="BIGINT" property="courseId"/>
-        <result column="signer_id" jdbcType="BIGINT" property="signerId"/>
-        <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime"/>
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="course_id" jdbcType="BIGINT" property="courseId" />
+        <result column="signer_id" jdbcType="BIGINT" property="signerId" />
+        <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime" />
+        <result column="score_time" jdbcType="TIMESTAMP" property="scoreTime" />
+        <result column="score" jdbcType="INTEGER" property="score" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, course_id, signer_id, sign_in_time
+        id, course_id, signer_id, sign_in_time, score_time, score
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from sign_in
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -22,9 +24,11 @@
     </delete>
     <insert id="insert" parameterType="cn.pumch.web.model.SignIn">
         insert into sign_in (id, course_id, signer_id,
-          sign_in_time)
+        sign_in_time, score_time, score
+        )
         values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
-          #{signInTime,jdbcType=TIMESTAMP})
+        #{signInTime,jdbcType=TIMESTAMP}, #{scoreTime,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER}
+        )
     </insert>
     <insert id="insertSelective" parameterType="cn.pumch.web.model.SignIn">
         insert into sign_in
@@ -41,6 +45,12 @@
             <if test="signInTime != null">
                 sign_in_time,
             </if>
+            <if test="scoreTime != null">
+                score_time,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -54,6 +64,12 @@
             </if>
             <if test="signInTime != null">
                 #{signInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="scoreTime != null">
+                #{scoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -69,6 +85,12 @@
             <if test="signInTime != null">
                 sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="scoreTime != null">
+                score_time = #{scoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -76,7 +98,9 @@
         update sign_in
         set course_id = #{courseId,jdbcType=BIGINT},
           signer_id = #{signerId,jdbcType=BIGINT},
-          sign_in_time = #{signInTime,jdbcType=TIMESTAMP}
+          sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+          score_time = #{scoreTime,jdbcType=TIMESTAMP},
+          score = #{score,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -109,7 +133,7 @@
     </select>
 
     <select id="selectBySIdInPage" resultMap="BaseResultMap">
-        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.score, sign_in.score_time
         from sign_in, course, ps_user
         where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
@@ -125,7 +149,7 @@
     <select id="selectCountBySId" resultType="java.lang.Integer">
         select count(sign_in.id)
         from sign_in, course, ps_user
-        where signer_id=ps_user.id and course.id=sign_in.course_id
+        where signer_id=ps_user.id and sign_in.course_id=course.id
         AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
         <if test="courseName != null">
             course.course_name LIKE #{courseName,jdbcType=VARCHAR},

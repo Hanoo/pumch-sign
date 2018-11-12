@@ -101,5 +101,18 @@ public class SController {
         }
     }
 
+    @RequestMapping(value = "/score", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject doScore(@RequestBody JSONObject scoreParam) {
+        Long signInId = scoreParam.getLong("signInId");
+        int score = scoreParam.getInt("score");
+        if (signInService.doScore(signInId, score)) {
+            scoreParam.put("data", "success");
+        } else {
+            scoreParam.put("data", "error");
+        }
+        return scoreParam;
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(SController.class);
 }
