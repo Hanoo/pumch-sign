@@ -57,9 +57,6 @@
                 <button id="showQrCode" class="btn btn-primary" data-toggle="modal" data-target="#myModal" disabled>
                     生成二维码
                 </button>
-                <button class="btn" id="test">
-                    测试按钮
-                </button>
             </div>
 
             <hr class="clearfix">
@@ -236,10 +233,6 @@
 
         $(".btn-reset").on("click", function () {
             $("#courseName").val("");
-        });
-
-        $("#test").on("click", function() {
-            alert($("input[name='courseId']:checked").val());
         });
 
     });

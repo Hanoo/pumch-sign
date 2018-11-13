@@ -133,6 +133,7 @@
             login_time = #{loginTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
+
     <!-- 手动添加 -->
     <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -168,7 +169,7 @@
         <if test="endTime != null">
             AND ps_user.login_time &lt;= #{endTime}
         </if>
-        order by ps_user.login_time desc
+        order by ps_user.create_time desc
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
 

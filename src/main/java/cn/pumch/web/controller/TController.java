@@ -14,9 +14,11 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -96,8 +98,9 @@ public class TController {
     }
 
     @RequestMapping(value = "/qrCode/{courseId}", method = RequestMethod.GET)
-    public void qrCode(@PathVariable String courseId, HttpServletResponse response) {
-        String url = "http://localhost:9999/s/signIn/" + courseId;
+    public void qrCode(@PathVariable String courseId, HttpServletRequest request, HttpServletResponse response) {
+        String serverPath = request.getScheme() +"://" + request.getServerName() + ":" + request.getServerPort();
+        String url = serverPath + "/s/signIn/" + courseId;
         try {
             QRCodeUtil.generateQRCode(url,500, 500, "jpg", response);
         } catch (Exception e) {

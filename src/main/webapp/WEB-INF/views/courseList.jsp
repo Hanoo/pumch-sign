@@ -75,8 +75,9 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>--%>
-                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>--%>
+                <button id="showQrCode" class="btn btn-primary" data-toggle="modal" data-target="#myModal" disabled>
+                    生成二维码
+                </button>
             </div>
 
             <hr class="clearfix">
@@ -84,6 +85,7 @@
                 <table id="page-content" class="table table-striped table-hover">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>序号</th>
                         <th>课程名称</th>
                         <th>任课教师</th>
@@ -92,6 +94,9 @@
                     <tbody>
                         <template v-if="data&&data.length>0">
                             <tr role="row" id="1" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" v-for="(record, index) in data">
+                                <td role="gridcell" aria-describedby="grid-table_cb">
+                                    <input type="radio" class="cbox" :value="record.id" name="courseId" @click="enableButton">
+                                </td>
                                 <td role="gridcell" aria-describedby="grid-table_id">{{index+1}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_note">{{record.tName}}</td>
@@ -105,6 +110,27 @@
         </div>
     </div>
 
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        课程二维码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <img src="assets/image/logo.png" id="qrCodeDiv"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 </body>
 </html>
@@ -113,6 +139,7 @@
 <script src="assets/lay/layui.js"></script>
 <script src="assets/lay/lay/modules/laypage.js"></script>
 <script src="assets/js/vue.min.js?v=2.5.9"></script>
+<script src="assets/bootstrap/js/bootstrap.js"></script>
 <script>
     $(document).ready(function(){
         layui.config({
@@ -231,4 +258,13 @@
         });
 
     });
+
+    function enableButton() {
+        var showQrCode = $("#showQrCode").attr("disabled");
+        if(showQrCode=='disabled') {
+            $("#showQrCode").attr("disabled", false);
+        }
+        var courseId = $("input[name='courseId']:checked").val();
+        $("#qrCodeDiv").attr("src", "${pageContext.request.contextPath}/mt/qrCode/"+courseId);
+    }
 </script>

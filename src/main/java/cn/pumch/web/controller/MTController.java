@@ -8,19 +8,19 @@ import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
 import cn.pumch.web.service.RoleService;
 import cn.pumch.web.util.CommonUtils;
+import cn.pumch.web.util.QRCodeUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -190,5 +190,16 @@ public class MTController {
         queryParam.put("data", JSONArray.fromObject(dataList));
 
         return queryParam;
+    }
+
+    @RequestMapping(value = "/qrCode/{courseId}", method = RequestMethod.GET)
+    public void qrCode(@PathVariable String courseId, HttpServletRequest request, HttpServletResponse response) {
+        String serverPath = request.getScheme() +"://" + request.getServerName() + ":" + request.getServerPort();
+        String url = serverPath + "/s/signIn/" + courseId;
+        try {
+            QRCodeUtil.generateQRCode(url,500, 500, "jpg", response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

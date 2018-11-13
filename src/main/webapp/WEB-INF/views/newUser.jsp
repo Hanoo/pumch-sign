@@ -48,10 +48,9 @@
                 <li><a href="javascript:void(0);">新建用户</a></li>
             </ol>
             <h1 class="pull-left">创建用户</h1>
-            <a href="mendianchaxun.html" class="btn btn-default pull-right ">返回</a>
 
             <hr class="clearfix">
-            <form class="form-horizontal cont">
+            <form class="form-horizontal cont" id="mainForm">
                 <div class="form-group">
                     <label class="col-sm-5 control-label text-right text-list">用户类型：</label>
                     <div class="col-sm-7">
@@ -84,7 +83,7 @@
                     <label  class="col-sm-5 control-label"></label>
                     <div class="col-sm-7">
                         <button type="button" class="btn btn-default save">保存</button>
-                        <button type="reset" class="btn btn-default">取消</button>
+                        <button type="reset" class="btn btn-default reset">重置</button>
                     </div>
                 </div>
             </form>
@@ -143,6 +142,10 @@
                     alert("系统内部错误，请重试。");
                 }
             });
+        });
+        
+        $(".reset").on("click", function () {
+            $("#mainForm").reset();
         });
     });
 </script>

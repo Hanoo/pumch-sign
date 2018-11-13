@@ -87,8 +87,8 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>
+                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>--%>
+                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>--%>
             </div>
 
             <hr class="clearfix">
