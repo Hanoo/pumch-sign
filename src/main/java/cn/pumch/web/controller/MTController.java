@@ -31,7 +31,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/mt")
-public class MTController {
+public class
+MTController {
 
     @Autowired
     private PsUserService userService;
@@ -201,5 +202,24 @@ public class MTController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/newCourse", method = RequestMethod.GET)
+    public String newCourse(HttpServletRequest request) {
+        List dataList = userService.findTeachersInPage(0, 50, null, null, null, "1", null, null);
+        request.setAttribute("data", JSONArray.fromObject(dataList));
+        return "newCourse";
+    }
+
+    @RequestMapping(value = "/newCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject newCourse(@RequestBody JSONObject queryParam) {
+        Long tId = queryParam.getLong("tId");
+        String courseName = queryParam.getString("courseName");
+        String tName = queryParam.getString("tName");
+
+        String result = courseService.createCourse(courseName, tId, tName);
+        queryParam.put("data", result);
+        return queryParam;
     }
 }

@@ -53,4 +53,11 @@ public interface CourseMapper {
      * @return
      */
     int selectCountByTId(@Param("tId") Long tId);
+
+    /**
+     * 查询指定名称的课程的数量
+     * @param courseName
+     * @return
+     */
+    int selectCourseByName(@Param("courseName") String courseName);
 }

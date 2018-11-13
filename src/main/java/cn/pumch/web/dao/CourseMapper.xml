@@ -107,4 +107,9 @@
         LEFT JOIN ps_user on course.t_id=ps_user.id
         where course.t_id = #{tId, jdbcType=VARCHAR}
     </select>
+    <select id="selectCourseByName" resultType="java.lang.Integer">
+        select count(id)
+        from course
+        where course_name=#{courseName, jdbcType=VARCHAR}
+    </select>
 </mapper>

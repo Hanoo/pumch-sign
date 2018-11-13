@@ -37,4 +37,12 @@ public interface CourseService {
      * @return
      */
     int getCourseCountByTId(Long tId);
+
+    /**
+     * 根据教师ID创建新课程
+     * @param courseName
+     * @param tId
+     * @return
+     */
+    String createCourse(String courseName, Long tId, String tName);
 }
