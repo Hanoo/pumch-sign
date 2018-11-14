@@ -126,5 +126,26 @@ public class CommonController {
         return "login";
     }
 
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
+    public String updatePassword() {
+        return "updatePassword";
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject updatePassword(@RequestBody JSONObject queryParam, HttpSession session) {
+        PsUser user = (PsUser) session.getAttribute("userInfo");
+        String loginName = user.getLoginName();
+        String oPassword = queryParam.getString("oPassword");
+        String nPassword = queryParam.getString("nPassword");
+
+        if (userService.updatePassword(loginName, oPassword, nPassword)) {
+            queryParam.put("result", "success");
+        } else {
+            queryParam.put("result", "failed");
+        }
+        return queryParam;
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
 }

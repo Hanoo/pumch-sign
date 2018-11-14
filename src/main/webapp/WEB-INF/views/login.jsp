@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-sm-offset-3 col-sm-7 remember">
                     <%--<input type="checkbox" value="remember-me" > 记得我--%>
-                    <span id="message" style="visibility: hidden;color:red">用户名或密码错误！</span>
+                    <span id="message" style="display: none;color:red">  </span>
                 </div>
                 <div class="col-sm-offset-3 col-sm-7">
                     <a href="javascript:void(0);" type="button" class="btn btn-warning">登录</a>

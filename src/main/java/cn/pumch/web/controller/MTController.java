@@ -216,10 +216,9 @@ MTController {
     public JSONObject newCourse(@RequestBody JSONObject queryParam) {
         Long tId = queryParam.getLong("tId");
         String courseName = queryParam.getString("courseName");
-        String tName = queryParam.getString("tName");
 
-        String result = courseService.createCourse(courseName, tId, tName);
-        queryParam.put("data", result);
+        String result = courseService.createCourse(courseName, tId);
+        queryParam.put("result", result);
         return queryParam;
     }
 }

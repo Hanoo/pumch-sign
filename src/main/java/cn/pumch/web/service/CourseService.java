@@ -44,5 +44,5 @@ public interface CourseService {
      * @param tId
      * @return
      */
-    String createCourse(String courseName, Long tId, String tName);
+    String createCourse(String courseName, Long tId);
 }

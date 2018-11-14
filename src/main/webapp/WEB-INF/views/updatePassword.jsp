@@ -39,84 +39,89 @@
                 <li><a href="mt/sList"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
                 <li><a href="mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
                 <li><a href="mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
-                <li><a href="mt/newUser"><img class="menu-icon" src="assets/image/Users.png" width="16">创建用户</a></li>
-                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">添加课程</a></li>
-                <li><a href="updatePassword"><img class="menu-icon" src="assets/image/Users.png" width="16">修改密码</a></li>
+                <li><a href="/mt/newUser"><img class="menu-icon" src="assets/image/Users.png" width="16">新建用户</a></li>
+                <li><a href="mt/newCourse"><img class="menu-icon" src="assets/image/Users.png" width="16">添加课程</a></li>
+                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">修改密码</a></li>
             </ul>
         </div>
         <div class="main">
             <ol class="breadcrumb">
                 <li><a href="javascript:void(0);">首页</a></li>
-                <li><a href="javascript:void(0);">添加课程</a></li>
+                <li><a href="javascript:void(0);">修改密码</a></li>
             </ol>
-            <h1 class="pull-left">创建用户</h1>
+            <h1 class="pull-left">修改密码</h1>
 
             <hr class="clearfix">
             <form class="form-horizontal cont" id="mainForm">
                 <div class="form-group">
-                    <label  class="col-sm-5 control-label text-right text-list">课程名称：</label>
+                    <label class="col-sm-5 control-label text-right text-list">原密码：</label>
                     <div class="col-sm-7">
-                        <input type="text" maxlength="30" class="form-control input2" placeholder="" id="courseName">
+                        <input type="password" class="form-control input2" placeholder="" id="oPassword">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-5 control-label text-right text-list">任课教师：</label>
+                    <label class="col-sm-5 control-label text-right text-list">新密码：</label>
                     <div class="col-sm-7">
-                        <select class="form-control input2" id="tId">
-                            <option>请选择</option>
-                        </select>
+                        <input type="password" class="form-control input2" placeholder="" id="nPassword">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">确认密码：</label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control input2" placeholder="" id="cPassword">
                     </div>
                 </div>
                 <hr>
                 <div class="form-group cont">
-                    <label  class="col-sm-5 control-label"></label>
+                    <label class="col-sm-5 control-label"></label>
                     <div class="col-sm-7">
                         <button type="button" class="btn btn-default save">保存</button>
                         <button type="reset" class="btn btn-default reset">重置</button>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
 <script src="assets/js/jquery-1.11.1.min.js"></script>
+<script src="assets/js/common.js"></script>
 <script>
     $(document).ready(function(){
-        var dataList = ${data};
-        for(var i=0;i<dataList.length;i++) {
-            var user = dataList[i];
-            var html = "<option value=" + user.id + ">"+user.nickName+"</option>";
-            $("#tId").append(html);
-        }
 
         $(".save").on("click", function() {
-            var tId = $("#tId").val();
-            if(tId=='请选择') {
-                alert("请选择任课教师！");
+            var oPassword = $("#oPassword").val();
+            if(!oPassword) {
+                alert("请填写原始密码");
                 return false;
             }
-            var courseName = $("#courseName").val();
-            if(!courseName) {
-                alert("请填写课程名称");
+            var nPassword = $("#nPassword").val();
+            if(!nPassword) {
+                alert("请填写新密码");
                 return false;
             }
-
-            var queryParam = {"tId":tId, "courseName":courseName};
+            var cPassword = $("#cPassword").val();
+            if(!cPassword) {
+                alert("请填写确认密码");
+                return false;
+            }
+            if(nPassword!=cPassword) {
+                alert("两次填写不一致！");
+                return false;
+            }
+            var queryParam = {"oPassword":hashCode(oPassword), "nPassword":hashCode(nPassword)};
 
             $.ajax({
                 type: 'post',
-                url: '${pageContext.request.contextPath}/mt/newCourse',
+                url: '${pageContext.request.contextPath}/updatePassword',
                 contentType: 'application/json;charset=UTF-8',
                 data:JSON.stringify(queryParam),
                 dataType: "json",
                 success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                     if(data.result=='failed') {
                         alert("数据读取访问异常！");
-                    } else if(data.result=='duplicateName') {
-                        alert("课程名称重复，创建失败！");
                     } else {
-                        alert("课程创建成功。");
+                        alert("密码已更新！");
                     }
                 },
                 error: function(data){

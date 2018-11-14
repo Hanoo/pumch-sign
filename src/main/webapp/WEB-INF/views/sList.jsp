@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <h5 class="navbar-brand login-nav" ><a href="/"><img class="menu-icon" src="assets/image/logo.png" width="24">课程签到后台管理系统</a></h5>
+            <h5 class="navbar-brand login-nav"><a href="/"><img class="menu-icon" src="assets/image/logo.png" width="24">课程签到后台管理系统</a></h5>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -39,9 +39,11 @@
         <div class="sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
-                <li><a href="/mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
-                <li><a href="/mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
+                <li><a href="mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
+                <li><a href="mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
                 <li><a href="mt/newUser"><img class="menu-icon" src="assets/image/Users.png" width="16">新建用户</a></li>
+                <li><a href="mt/newCourse"><img class="menu-icon" src="assets/image/Users.png" width="16">添加课程</a></li>
+                <li><a href="updatePassword"><img class="menu-icon" src="assets/image/Users.png" width="16">修改密码</a></li>
             </ul>
         </div>
         <div class="col-md-12 main ">
