@@ -195,8 +195,8 @@ MTController {
 
     @RequestMapping(value = "/qrCode/{courseId}", method = RequestMethod.GET)
     public void qrCode(@PathVariable String courseId, HttpServletRequest request, HttpServletResponse response) {
-        String serverPath = request.getScheme() +"://" + request.getServerName() + ":" + request.getServerPort();
-        String url = serverPath + "/s/signIn/" + courseId;
+        String serverPath = request.getScheme() +"://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        String url = serverPath + "s/signIn/" + courseId;
         try {
             QRCodeUtil.generateQRCode(url,500, 500, "jpg", response);
         } catch (Exception e) {

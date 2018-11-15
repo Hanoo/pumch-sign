@@ -48,7 +48,12 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
         if(null == loginName || null == passWord) {
             return false;
         } else {
-            return passWord.equals(this.getUserByLoginName(loginName).getPassword());
+            PsUser user = this.getUserByLoginName(loginName);
+            if(null==user) {
+                return false;
+            } else {
+                return passWord.equals(this.getUserByLoginName(loginName).getPassword());
+            }
         }
     }
 

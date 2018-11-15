@@ -10,7 +10,8 @@ CREATE TABLE permission (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='权限表';
 
 /*Data for the table 'permission' */
-insert  into permission(id,permission_name,permission_sign,description) values (1,'用户新增','ps_user:create',NULL);
+insert  into permission(id, permission_name, permission_sign, description)
+                values (1,'用户新增','ps_user:create',NULL);
 
 /*Table structure for table 'role' */
 
@@ -56,7 +57,7 @@ CREATE TABLE ps_user (
   id          BIGINT(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
   login_name  VARCHAR(50) UNIQUE DEFAULT NULL COMMENT '用户名',
   password    CHAR(64) DEFAULT NULL COMMENT '密码',
-  nick_name   VARCHAR(50) DEFAULT '白衣天使' COMMENT '昵称',
+  nick_name   VARCHAR(50) COMMENT '昵称',
   sex         CHAR(1) DEFAULT '1' COMMENT '性别',
   id_no       VARCHAR(18) DEFAULT NULL  COMMENT '身份证号',
   u_state     VARCHAR(2) DEFAULT NULL COMMENT '状态',
@@ -68,7 +69,7 @@ CREATE TABLE ps_user (
 /*Data for the table 'ps_user' */
 
 insert  into ps_user(id, login_name , password, nick_name, u_state, create_time)
-             values (1,' admin','49','管理教师','1', '2018-10-27 12:59:08');
+             values (1,'admin','49','管理教师','1', '2018-10-27 12:59:08');
 
 /*Table structure for table 'user_role' */
 
@@ -85,6 +86,7 @@ CREATE TABLE user_role (
 
 insert  into user_role(id,user_id,role_id) values (1,1,1);
 
+DROP TABLE IF EXISTS course;
 CREATE TABLE course (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
   course_name   VARCHAR(50) NOT NULL COMMENT '课程名称',
@@ -92,12 +94,13 @@ CREATE TABLE course (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='课程表';
 
+DROP TABLE IF EXISTS sign_in;
 CREATE TABLE sign_in (
   id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
   course_id    bigint(20) NOT NULL COMMENT '课程ID',
   signer_id    bigint(20) NOT NULL COMMENT '签到人ID',
-  sign_in_time DATETIME NOT NULL COMMENT '签到时间',
-  score_time   DATETIME NOT NULL COMMENT '评分时间',
-  score        int(3) NOT NULL COMMENT '分值',
+  sign_in_time DATETIME   NOT NULL COMMENT '签到时间',
+  score_time   DATETIME   COMMENT '评分时间',
+  score        int(3)     COMMENT '分值',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到表';

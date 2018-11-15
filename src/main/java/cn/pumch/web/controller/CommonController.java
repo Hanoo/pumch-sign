@@ -147,5 +147,10 @@ public class CommonController {
         return queryParam;
     }
 
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
+    public String success() {
+        return "success";
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
 }

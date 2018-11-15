@@ -89,15 +89,15 @@ public class SController {
     }
 
     @RequestMapping(value = "/signIn/{courseId}")
-    @ResponseBody
-    public String doSignIn(@PathVariable Long courseId, HttpSession session) {
-        PsUser user = (PsUser) session.getAttribute("userInfo");
+    public String doSignIn(@PathVariable Long courseId, HttpServletRequest request) {
+        PsUser user = (PsUser) request.getSession().getAttribute("userInfo");
         if(signInService.doSignIn(user.getId(), courseId)) {
             logger.info("学生" + user.getNickName() + "签到成功！");
             return "success";
         } else {
             logger.warn("签到失败！");
-            return "failed";
+            request.setAttribute("eCode", 500);
+            return "error";
         }
     }
 
