@@ -77,7 +77,7 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <button id="showQrCode" class="btn btn-primary" data-toggle="modal" data-target="#myModal" disabled>
+                <button id="showQrCode" class="btn btn-primary" disabled>
                     生成二维码
                 </button>
             </div>
@@ -257,6 +257,11 @@
 
         $(".btn-reset").on("click", function () {
             $("#courseName").val("");
+        });
+
+        $("#showQrCode").on("click", function() {
+            var courseId = $("input[name='courseId']:checked").val();
+            window.location = "${pageContext.request.contextPath}/mt/genQrCode/"+courseId;
         });
 
     });

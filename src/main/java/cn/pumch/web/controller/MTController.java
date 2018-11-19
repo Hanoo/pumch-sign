@@ -1,9 +1,11 @@
 package cn.pumch.web.controller;
 
+import cn.pumch.core.util.ZipUtils;
 import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.model.Role;
+import cn.pumch.web.redis.JedisWrap;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
 import cn.pumch.web.service.RoleService;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +45,9 @@ MTController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private JedisWrap jedisService;
 
     private final static Logger logger = LoggerFactory.getLogger(MTController.class);
 
@@ -202,6 +208,38 @@ MTController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/genQrCode/{courseId}", method = RequestMethod.GET)
+    public void genQrCode(@PathVariable String courseId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String serverPath = request.getScheme() +"://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        String url = serverPath + "s/signIn/" + courseId;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dateSuffix = sdf.format(new Date());
+
+        String basePath = "/var/pumchSign/qrCode/";
+        File directory = new File(basePath + courseId + "_" + dateSuffix+"/");
+        if(!directory.exists()) {
+            directory.mkdir();
+        }
+
+        long startTime = System.currentTimeMillis();
+        String[] uuids = new String[50];
+        for(int i=0;i<50;i++) {
+            String uuid = CommonUtils.getUUId();
+            String qrCode = directory.getPath() + "/" + dateSuffix + "-" + (i+1) + ".jpg";
+            QRCodeUtil.generateQRCode(url + "/" + uuid, 200, 200, "jpg", qrCode);
+            uuids[i] = uuid;
+        }
+        String redisKey = "signIn:" + dateSuffix;
+        jedisService.addSetEle(redisKey, uuids);
+        jedisService.setExpire(redisKey, 3600 * 24);
+        long endTime = System.currentTimeMillis();
+        logger.info("生成二维码消耗时间：" + (endTime-startTime)/1000);
+
+        response.setHeader("Content-Disposition","attachment;fileName=" + courseId + "_" + dateSuffix + ".zip");
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        ZipUtils.toZip(directory.getPath(), response.getOutputStream(), true);
     }
 
     @RequestMapping(value = "/newCourse", method = RequestMethod.GET)

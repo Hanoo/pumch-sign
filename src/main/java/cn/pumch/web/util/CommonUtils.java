@@ -5,6 +5,7 @@ import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * JSON格式化工具类
@@ -29,5 +30,10 @@ public class CommonUtils {
         };
         jsonConfig.setJsonPropertyFilter(filter);
         return jsonConfig;
+    }
+
+    public static String getUUId() {
+        String id = UUID.randomUUID().toString();
+        return id.replaceAll("-","");
     }
 }

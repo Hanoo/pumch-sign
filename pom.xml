@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                                   http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.pumch</groupId>
     <artifactId>pumch-sign</artifactId>
@@ -13,7 +13,7 @@
         <profile>
             <id>local</id>
             <properties>
-                <jdbc.url>jdbc:mysql://127.0.0.1:3306/pumch-sign</jdbc.url>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/pumch_sign</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>mysql</jdbc.password>
                 <log4j.logger.org.wwfchina>DEBUG</log4j.logger.org.wwfchina>
@@ -435,10 +435,10 @@
             <version>1.1</version>
         </dependency>
         <dependency >
-            <groupId >com.sun.mail </groupId >
+            <groupId>com.sun.mail </groupId>
             <artifactId >javax.mail </artifactId >
-            <version >1.5.4 </version >
-        </dependency >
+            <version>1.5.4 </version>
+        </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>
@@ -463,5 +463,16 @@
             <version>3.3.0</version>
         </dependency>
 
+        <!-- spring redis and jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.6.2.RELEASE</version>
+        </dependency>
     </dependencies>
 </project>
