@@ -70,18 +70,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label text-right text-list">状态：</label>
-                        <div class="col-sm-8">
-                            <select class="form-control input2" id="state">
-                                <option>请选择状态</option>
-                                <option>在籍</option>
-                                <option>毕业</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <%--<div class="col-md-4">--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-sm-2 control-label text-right text-list">状态：</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control input2" id="state">--%>
+                                <%--<option>请选择状态</option>--%>
+                                <%--<option>在籍</option>--%>
+                                <%--<option>毕业</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
         </div>
 

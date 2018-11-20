@@ -8,6 +8,7 @@ import cn.pumch.core.generic.GenericDao;
 import cn.pumch.web.model.Role;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.RoleService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +89,10 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
             pageSize = 10;
         }
         start = (page -1) * pageSize;
+
+        if(StringUtils.isNotEmpty(nickName)) {
+            nickName = "%" + nickName + "%";
+        }
 
         return mapper.selectByConditionsInPage(nickName, sex, idNo, state, startTime, endTime, userType.getRole_name(), start, pageSize);
     }

@@ -37,8 +37,20 @@ public class CommonController {
     private PsUserService userService;
 
     @RequestMapping(value = {"/","/login","/web/login"}, method = RequestMethod.GET)
-    public String login() {
-        return "login";
+    public String login(HttpSession session) {
+        PsUser user = (PsUser) session.getAttribute("userInfo");
+        Subject subject = SecurityUtils.getSubject();
+        String jump = "login";
+        if(null!=user && null!=subject) {
+            if(subject.hasRole("mt")) {
+                jump = "forward:/mt/sList";
+            } else if (subject.hasRole("t")) {
+                jump = "forward:/t/mySignIn";
+            } else {
+                jump = "forward:/s/mySignList";
+            }
+        }
+        return jump;
     }
 
     /**

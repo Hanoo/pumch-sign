@@ -70,18 +70,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label text-right text-list">状态：</label>
-                        <div class="col-sm-8">
-                            <select class="form-control input2" id="state">
-                                <option>请选择状态</option>
-                                <option>在籍</option>
-                                <option>毕业</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <%--<div class="col-md-4">--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-sm-2 control-label text-right text-list">状态：</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control input2" id="state">--%>
+                                <%--<option>请选择状态</option>--%>
+                                <%--<option>在籍</option>--%>
+                                <%--<option>毕业</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
         </div>
 
@@ -102,7 +102,7 @@
                         <th>登录名</th>
                         <th>姓名</th>
                         <th>身份证号</th>
-                        <th>入学时间</th>
+                        <th>创建时间</th>
                         <th>状态</th>
                     </tr>
                     </thead>

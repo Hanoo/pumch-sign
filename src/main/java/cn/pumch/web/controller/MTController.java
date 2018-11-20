@@ -105,7 +105,10 @@ MTController {
         String nickName = null;
         Object startTime = queryParam.get("startTime");
         Object endTime = queryParam.get("endTime");
-        String state = queryParam.getString("state");
+        String state = "1";
+        if(null!=queryParam.get("state")) {
+            state = queryParam.getString("state");
+        }
         String userType = queryParam.getString("userType");
 
         Date startDate = null;
