@@ -2,6 +2,7 @@ package cn.pumch.web.controller;
 
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.model.SignIn;
+import cn.pumch.web.redis.JedisWrap;
 import cn.pumch.web.service.SignInService;
 import cn.pumch.web.util.CommonUtils;
 import net.sf.json.JSONArray;
@@ -29,6 +30,9 @@ public class SController {
 
     @Autowired
     private SignInService signInService;
+
+    @Autowired
+    private JedisWrap jedisService;
 
     @RequestMapping(value = "/mySignList", method = RequestMethod.GET)
     public String mySignListPage() {
@@ -88,15 +92,27 @@ public class SController {
         return queryParam;
     }
 
-    @RequestMapping(value = "/signIn/{courseId}")
-    public String doSignIn(@PathVariable Long courseId, HttpServletRequest request) {
-        PsUser user = (PsUser) request.getSession().getAttribute("userInfo");
-        if(signInService.doSignIn(user.getId(), courseId)) {
-            logger.info("学生" + user.getNickName() + "签到成功！");
-            return "success";
+    @RequestMapping(value = "/signIn/{courseId}/{date}/{uuid}")
+    public String doSignIn(@PathVariable Long courseId, @PathVariable String date,
+                           @PathVariable String uuid, HttpServletRequest request) {
+        String redisKey = "signIn:" + date;
+        boolean exists = jedisService.isMember(redisKey, uuid);
+        if (exists) {
+            PsUser user = (PsUser) request.getSession().getAttribute("userInfo");
+            if(signInService.doSignIn(user.getId(), courseId)) {
+                logger.info("学生" + user.getNickName() + "签到成功！");
+                jedisService.removeSetEle(redisKey, uuid);
+                return "success";
+            } else {
+                logger.warn("内部错误导致签到失败！");
+                request.setAttribute("eCode", 500);
+                request.setAttribute("message", "内部错误导致签到失败！");
+                return "error";
+            }
         } else {
-            logger.warn("签到失败！");
-            request.setAttribute("eCode", 500);
+            logger.warn("此码已过期，无法签到！");
+            request.setAttribute("eCode", 401);
+            request.setAttribute("message", "此码已过期，无法签到！");
             return "error";
         }
     }

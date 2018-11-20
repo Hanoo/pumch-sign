@@ -7,6 +7,13 @@ import java.util.List;
 public interface CourseService {
 
     /**
+     * 通过ID查询课程
+     * @param courseId
+     * @return
+     */
+    Course getCourseById(Long courseId);
+
+    /**
      * 查询课程记录
      * @param page
      * @param pageSize

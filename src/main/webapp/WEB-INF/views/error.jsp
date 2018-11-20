@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -17,7 +18,7 @@
                     <p class="error__text">${eCode}</p>
                 </div>
                 <div class="error__right">
-                    <div class="error__head">系统出故障了...</div>
+                    <div class="error__head"><c:if test="${empty message}">系统出故障了...</c:if><c:if test="${!empty message}">${message}</c:if></div>
                     <p class="error__text">很抱歉，没有找到您需要的页面。请您返回首页，谢谢！</p>
                     <div class="error__list">
                         <a href="web/login" class="link">返回首页</a>

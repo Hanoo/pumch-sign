@@ -5,7 +5,6 @@ import cn.pumch.web.model.Course;
 import cn.pumch.web.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -14,6 +13,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Override
+    public Course getCourseById(Long courseId) {
+        if(courseId<=0) {
+            return null;
+        } else {
+            return courseMapper.selectByPrimaryKey(courseId);
+        }
+    }
 
     @Override
     public List<Course> getCoursesByConditionsInPage(int page, int pageSize, String courseName) {
