@@ -1,0 +1,37 @@
+.contaner-l{
+    margin-top: 25%;
+}
+.input-m {
+    margin-bottom: 10px;
+    clear: both;
+}
+.yzm-w {
+    width: 70%;
+    float: left;
+    height: 40px;
+}
+.send-m {
+    padding: 9px 10px;
+    background-color: #d5d6d0;
+    color: #000000;
+    width: 27%;
+    text-align: center;
+}
+.send-m span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    font-family: "Chalkduster";
+}
+.username-field {
+    background: url(../image/user.png) no-repeat;
+    background-color: #ffffff;
+    padding-left: 50px;
+    height: 40px;
+}
+.username-password {
+    background: url(../image/password.png) no-repeat;
+    background-color: #ffffff;
+    padding-left: 50px;
+    height: 40px;
+}

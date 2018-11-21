@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.service.PsUserService;
+import cn.pumch.web.util.CommonUtils;
 import com.mysql.jdbc.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,10 +38,13 @@ public class CommonController {
     private PsUserService userService;
 
     @RequestMapping(value = {"/","/login","/web/login"}, method = RequestMethod.GET)
-    public String login(HttpSession session) {
-        PsUser user = (PsUser) session.getAttribute("userInfo");
+    public String login(HttpServletRequest request) {
+        PsUser user = (PsUser) request.getSession().getAttribute("userInfo");
         Subject subject = SecurityUtils.getSubject();
         String jump = "login";
+        if (CommonUtils.isMobileAgent(request.getHeader("user-agent"))) {
+            jump = "mLogin";
+        }
         if(null!=user && null!=subject) {
             if(subject.hasRole("mt")) {
                 jump = "forward:/mt/sList";
@@ -135,7 +139,7 @@ public class CommonController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         logger.info("用户"+userInfo.getLoginName()+"登出成功！");
-        return "login";
+        return "forward:/login";
     }
 
     @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)

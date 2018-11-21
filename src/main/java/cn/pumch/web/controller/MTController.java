@@ -35,8 +35,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/mt")
-public class
-MTController {
+public class MTController {
 
     @Autowired
     private PsUserService userService;
