@@ -1,6 +1,7 @@
 package cn.pumch.web.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -54,6 +55,13 @@ public class CommonController {
                 jump = "forward:/s/mySignList";
             }
         }
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies) {
+            String cookieName = cookie.getName();
+            if(cookieName.equals("Pum_Session")) {
+                String value = cookie.getValue();
+            }
+        }
         return jump;
     }
 
@@ -70,7 +78,7 @@ public class CommonController {
 
         String loginName = json.getString("loginName");
         String password = json.getString("password");
-        String jump = "s";
+        String jump = "/s/mySignList";
 
         try {
             Subject subject = SecurityUtils.getSubject();
@@ -100,8 +108,6 @@ public class CommonController {
                     } else {
                         jump = "/s/mySignList";
                     }
-                } else {
-                    jump = "/s/mySignList";
                 }
             }
         } catch (AuthenticationException e) {
