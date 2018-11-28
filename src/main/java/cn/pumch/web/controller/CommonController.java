@@ -3,11 +3,14 @@ package cn.pumch.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.service.PsUserService;
+import cn.pumch.web.util.AESEncrypUtil;
 import cn.pumch.web.util.CommonUtils;
+import cn.pumch.web.util.ParseSystemUtil;
 import com.mysql.jdbc.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -41,13 +44,31 @@ public class CommonController {
     @RequestMapping(value = {"/","/login","/web/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
         PsUser user = (PsUser) request.getSession().getAttribute("userInfo");
-        Subject subject = SecurityUtils.getSubject();
         String jump = "login";
         if (CommonUtils.isMobileAgent(request.getHeader("user-agent"))) {
             jump = "mLogin";
         }
-        if(null!=user && null!=subject) {
-            if(subject.hasRole("mt")) {
+
+        if(null==user) {
+            Cookie[] cookies = request.getCookies();
+            for(Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if(cookieName.equals(REMEMBERME_TOKEN_NAME)) {
+                    String cookieValue = cookie.getValue();
+                    byte[] valueArray = ParseSystemUtil.parseHexStr2Byte(cookieValue);
+                    String decrypt = new String(AESEncrypUtil.decrypt(valueArray));
+                    String[] np = decrypt.split(":");
+                    try {
+                        jump = "forward:" + doLogin(np[0], np[1], request);
+                        logger.info("用户通过Cookie登录成功：" + np[0]);
+                    } catch (AuthenticationException e) {
+
+                    }
+                }
+            }
+        } else {
+            Subject subject = SecurityUtils.getSubject();
+            if (subject.hasRole("mt")) {
                 jump = "forward:/mt/sList";
             } else if (subject.hasRole("t")) {
                 jump = "forward:/t/mySignIn";
@@ -55,13 +76,7 @@ public class CommonController {
                 jump = "forward:/s/mySignList";
             }
         }
-        Cookie[] cookies = request.getCookies();
-        for(Cookie cookie : cookies) {
-            String cookieName = cookie.getName();
-            if(cookieName.equals("Pum_Session")) {
-                String value = cookie.getValue();
-            }
-        }
+
         return jump;
     }
 
@@ -74,42 +89,26 @@ public class CommonController {
      */
     @ResponseBody
     @RequestMapping(value = "/web/login", method = RequestMethod.POST)
-    public JSONObject doLogin(HttpServletRequest request, @RequestBody JSONObject json) {
+    public JSONObject doLogin(@RequestBody JSONObject json, HttpServletRequest request, HttpServletResponse response) {
 
         String loginName = json.getString("loginName");
         String password = json.getString("password");
-        String jump = "/s/mySignList";
+        boolean rememberMe = json.getBoolean("rememberMe");
 
         try {
-            Subject subject = SecurityUtils.getSubject();
-            if (!subject.isAuthenticated()) {
-                // 身份验证
-                subject.login(new UsernamePasswordToken(loginName, password));
-                // 验证成功在Session中保存用户信息
-                PsUser authUserInfo = userService.getUserByLoginName(loginName);
-                request.getSession().setAttribute("userInfo", authUserInfo);
-                authUserInfo.setLoginTime(new Date());
-                userService.update(authUserInfo);
-            } // 已经登录直接跳转
-            if(subject.hasRole("mt")) {
-                jump = "/mt/sList";
-            } else if (subject.hasRole("t")) {
-                jump = "/t/mySignIn";
-            } else if (subject.hasRole("s")) {
-                SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-                String urlBeforeRedirect = null;
-                if (null != savedRequest) {
-                    urlBeforeRedirect = WebUtils.getSavedRequest(request).getRequestUrl();
-                }
-                if (!StringUtils.isNullOrEmpty(urlBeforeRedirect) && !urlBeforeRedirect.endsWith("logout")) {
-                    urlBeforeRedirect = urlBeforeRedirect.replace(request.getContextPath(), "");
-                    if (urlBeforeRedirect.length() > 2) {
-                        jump = urlBeforeRedirect;
-                    } else {
-                        jump = "/s/mySignList";
-                    }
-                }
+            String jump = doLogin(loginName, password, request);
+
+            json.put("resultInfo", jump);
+            json.put("result", "success");
+
+            if(rememberMe) {
+                String remMeToken = loginName + ":" + password;
+                Cookie cookie = new Cookie(REMEMBERME_TOKEN_NAME, AESEncrypUtil.encrypt(remMeToken));
+                cookie.setPath("/");
+                cookie.setMaxAge(2592000);
+                response.addCookie(cookie);
             }
+            logger.info(loginName+" 登录成功。");
         } catch (AuthenticationException e) {
             // 身份验证失败
             logger.error("用户验证失败，用户名：" + loginName, e);
@@ -117,11 +116,6 @@ public class CommonController {
             json.put("resultInfo", "用户名或密码错误！");
             return json;
         }
-
-        json.put("resultInfo", jump);
-        json.put("result", "success");
-
-        logger.info(loginName+" 登录成功。");
         return json;
     }
 
@@ -134,16 +128,24 @@ public class CommonController {
     /**
      * 用户登出
      *
-     * @param session
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpSession session) {
-        PsUser userInfo = (PsUser) session.getAttribute("userInfo");
-        session.removeAttribute("userInfo");
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        PsUser userInfo = (PsUser) request.getSession().getAttribute("userInfo");
+        request.getSession().removeAttribute("userInfo");
         // 登出操作
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies) {
+            if(REMEMBERME_TOKEN_NAME.equals(cookie.getName())) {
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+
         logger.info("用户"+userInfo.getLoginName()+"登出成功！");
         return "forward:/login";
     }
@@ -174,5 +176,43 @@ public class CommonController {
         return "success";
     }
 
+    private String doLogin(String loginName, String password, HttpServletRequest request)
+            throws AuthenticationException {
+        String jump = "/s/mySignList";
+        Subject subject = SecurityUtils.getSubject();
+        if (!subject.isAuthenticated()) {
+            // 身份验证
+            subject.login(new UsernamePasswordToken(loginName, password));
+            // 验证成功在Session中保存用户信息
+            PsUser authUserInfo = userService.getUserByLoginName(loginName);
+            request.getSession().setAttribute("userInfo", authUserInfo);
+            authUserInfo.setLoginTime(new Date());
+            userService.update(authUserInfo);
+        } // 已经登录直接跳转
+        if(subject.hasRole("mt")) {
+            jump = "/mt/sList";
+        } else if (subject.hasRole("t")) {
+            jump = "/t/mySignIn";
+        } else if (subject.hasRole("s")) {
+            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+            String urlBeforeRedirect = null;
+            if (null != savedRequest) {
+                urlBeforeRedirect = WebUtils.getSavedRequest(request).getRequestUrl();
+            }
+            if (!StringUtils.isNullOrEmpty(urlBeforeRedirect) && !urlBeforeRedirect.endsWith("logout")) {
+                urlBeforeRedirect = urlBeforeRedirect.replace(request.getContextPath(), "");
+                if (urlBeforeRedirect.length() > 2) {
+                    jump = urlBeforeRedirect;
+                } else {
+                    jump = "/s/mySignList";
+                }
+            }
+        }
+
+        return jump;
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
+
+    private final static String REMEMBERME_TOKEN_NAME = "Pum_Session";
 }

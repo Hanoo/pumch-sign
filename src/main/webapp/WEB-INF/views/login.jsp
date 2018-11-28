@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-sm-offset-3 col-sm-7 remember">
-                    <%--<input type="checkbox" value="remember-me" > 记得我--%>
+                    <input type="checkbox" id="rememberMe" /> 记得我
                     <span id="message" style="display: none;color:red">  </span>
                 </div>
                 <div class="col-sm-offset-3 col-sm-7">
@@ -78,13 +78,14 @@
 //            $('#jcaptcha').css('borderColor', 'red').focus();
 //            return;
 //        }
+        var rememberMe = $("#rememberMe").is(':checked');
         password=hashCode(password);
 
         $.ajax({
             type:"post",
             url:"${pageContext.request.contextPath}/web/login",
             contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({"loginName":loginName,"password":password}),
+            data: JSON.stringify({"loginName":loginName,"password":password,"rememberMe":rememberMe}),
             dataType: 'json',
             async: false,
             success:function(msg){

@@ -1,6 +1,7 @@
 package cn.pumch.test;
 
-
+import cn.pumch.web.util.AESEncrypUtil;
+import cn.pumch.web.util.ParseSystemUtil;
 import cn.pumch.web.util.QRCodeUtil;
 import org.junit.Test;
 
@@ -30,5 +31,24 @@ public class CommonTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+
+    public void testEncrypt() {
+        String content = "admin:49";
+
+        System.out.println("加密之前：" + content);
+        // 加密
+        //如果想要加密内容不显示乱码，可以先将密文转换为16进制
+        String hexStrResult = AESEncrypUtil.encrypt(content);
+        System.out.println("16进制的密文："  + hexStrResult);
+
+        //如果的到的是16进制密文，别忘了先转为2进制再解密
+        byte[] twoStrResult = ParseSystemUtil.parseHexStr2Byte(hexStrResult);
+
+        // 解密
+        byte[] decrypt = AESEncrypUtil.decrypt(twoStrResult);
+        System.out.println("解密后的内容：" + new String(decrypt));
     }
 }
