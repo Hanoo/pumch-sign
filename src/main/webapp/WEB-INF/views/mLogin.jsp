@@ -29,6 +29,7 @@
             <%--<input type="text" class="form-control yzm-w" id="exampleInputAmount" placeholder="验证码">--%>
             <%--<div class="pull-right send-m"><span>10978</span></div>--%>
             <%--<div class="clearfix"></div>--%>
+            <input type="checkbox" id="rememberMe" /> 记得我
             <span id="message"></span>
         </div>
         <div class="input-m">
@@ -68,13 +69,14 @@
             $('#password').css('borderColor', 'red').focus();
             return;
         }
+        var rememberMe = $("#rememberMe").is(':checked');
         password=hashCode(password);
 
         $.ajax({
             type:"post",
             url:"${pageContext.request.contextPath}/web/login",
             contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({"loginName":loginName,"password":password}),
+            data: JSON.stringify({"loginName":loginName,"password":password, "rememberMe":rememberMe}),
             dataType: 'json',
             async: false,
             success:function(msg){
