@@ -1,0 +1,94 @@
+.contaner-l{
+    margin-top: 25%;
+}
+h5{
+    font-size:1em;
+    font-weight: normal;
+}
+li{
+    list-style-type: none;
+}
+p{
+    font-size:0.8em;
+}
+.bj{
+    background-color: #f3f3f3;
+}
+.head{
+    height: 10%;
+    width:100%;
+    position:absolute;
+    top:0;
+    background-color: #428bca;
+}
+.logo{
+    color:#ffffff;
+    font-size:2em;
+    padding-top: 0.3em;
+}
+.con-list ul {
+    background-color: #ffffff;
+
+    position: absolute;
+    top:16.5%;
+    left: -3em;
+    right:0;
+    bottom: -1em;
+}
+.con-list ul li{
+    margin: 1em;
+    border-bottom: 1px #dddddd dashed;
+}
+.search{
+    position: absolute;
+    top:11%;
+    left:0.5em;
+    right: 0.5em;
+}
+.form-control{
+    border-radius: 50em;
+}
+.form-control-feedback{
+    color: #ddd;
+}
+.yellow{
+    color:#fcac00;
+}
+.text-list{
+    padding-right: 0.2em;
+    width: 80%;
+}
+.text-nav{
+    width:20%;
+    padding-right: 0.2em;
+}
+.head-nav{
+    position: absolute;
+    top:2em;
+    right:1.2em;
+}
+.head-nav a{
+    color:#ffffff!important;
+    text-decoration: none;
+}
+.con{
+    margin-top: 10%;
+    background-color: #ffffff;
+}
+
+.in-5{
+    width:30%;
+    font-size: 0.8em;
+    display: inline;
+    margin-top: 3em;
+}
+.btn-tj{
+    background-color: #428bca;
+}
+.tj{
+
+    margin: 3em 1em ;
+    border-top: 1px solid #ddd;
+    padding-top: 2em;
+
+}

@@ -7,6 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 public interface SignInService {
+
+    /**
+     * 根据主键查询签到数据
+     * @param signInId
+     * @return
+     */
+    SignIn getPrettyInfoById(Long signInId);
+
     /**
      * 根据教师ID查询任课课程签到列表
      * @param page

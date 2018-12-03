@@ -36,7 +36,7 @@ public class CommonTest {
     @Test
 
     public void testEncrypt() {
-        String content = "admin:49";
+        String content = "gyy:-1935535150";
 
         System.out.println("加密之前：" + content);
         // 加密

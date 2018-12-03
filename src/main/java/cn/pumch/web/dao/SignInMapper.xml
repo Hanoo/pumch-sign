@@ -168,4 +168,12 @@
         AND sign_in_time > #{startTime,jdbcType=TIMESTAMP}
         AND sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
     </select>
+
+    <select id="selectFullSignIn" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.score, sign_in.score_time
+        from sign_in, course, ps_user
+        where sign_in.signer_id=ps_user.id
+        AND sign_in.course_id=course.id
+        AND sign_in.id=#{id, jdbcType=BIGINT}
+    </select>
 </mapper>

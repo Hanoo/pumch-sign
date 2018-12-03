@@ -35,8 +35,12 @@ public class SController {
     private JedisWrap jedisService;
 
     @RequestMapping(value = "/mySignList", method = RequestMethod.GET)
-    public String mySignListPage() {
-        return "sMySignInList";
+    public String mySignListPage(HttpServletRequest request) {
+        if (CommonUtils.isMobileAgent(request.getHeader("user-agent"))) {
+            return "mMySignInList";
+        } else {
+            return "sMySignInList";
+        }
     }
 
     @RequestMapping(value = "/signList", method = RequestMethod.POST)
@@ -61,7 +65,6 @@ public class SController {
         }
 
         String courseName = null;
-        String sName = null;
         Date startTime = null;
         Date endTime = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
@@ -70,9 +73,7 @@ public class SController {
         if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
             courseName = queryParam.getString("courseName");
         }
-        if (StringUtils.isNotEmpty(queryParam.getString("sName"))) {
-            sName = queryParam.getString("sName");
-        }
+
         try {
             if (StringUtils.isNotEmpty(queryParam.getString("startTime"))) {
                 startTime = sdf.parse(queryParam.getString("startTime"));
@@ -80,8 +81,8 @@ public class SController {
             if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
                 endTime = sdf.parse(queryParam.getString("endTime"));
             }
-            List<SignIn> dataList = signInService.getSSignInListInPage(page, pageSize, psUser.getId(), courseName, sName);
-            int totalRecord = signInService.getSSignInCount(psUser.getId(), courseName, sName);
+            List<SignIn> dataList = signInService.getSSignInListInPage(page, pageSize, psUser.getId(), courseName, null);
+            int totalRecord = signInService.getSSignInCount(psUser.getId(), courseName, null);
 
             queryParam.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
             queryParam.put("totalRecord", totalRecord);
@@ -128,6 +129,13 @@ public class SController {
             scoreParam.put("data", "error");
         }
         return scoreParam;
+    }
+
+    @RequestMapping(value = "/score/{signInId}", method = RequestMethod.GET)
+    public String mScore(@PathVariable Long signInId, HttpServletRequest request) {
+        SignIn signIn = signInService.getPrettyInfoById(signInId);
+        request.setAttribute("signIn", signIn);
+        return "mScore";
     }
 
     private final static Logger logger = LoggerFactory.getLogger(SController.class);

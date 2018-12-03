@@ -18,6 +18,11 @@ public class SignInServiceImpl implements SignInService {
     private SignInMapper signInMapper;
 
     @Override
+    public SignIn getPrettyInfoById(Long signInId) {
+        return signInMapper.selectFullSignIn(signInId);
+    }
+
+    @Override
     public List<SignIn> getTSignInListInPage(int page, int pageSize, Long tId,
                                           String courseName, String sName) {
         int start;

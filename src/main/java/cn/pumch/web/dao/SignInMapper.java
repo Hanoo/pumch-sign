@@ -19,6 +19,8 @@ public interface SignInMapper {
 
     int updateByPrimaryKey(SignIn record);
 
+    SignIn selectFullSignIn(Long signInId);
+
     /**
      * 根据条件进行查询指定教师课程的签到情况
      * @param start
