@@ -34,9 +34,9 @@ public class CommonTest {
     }
 
     @Test
-
     public void testEncrypt() {
-        String content = "gyy:-1935535150";
+        String passwod = "pumch2018";
+        String content = "gyy:"+passwod.hashCode();
 
         System.out.println("加密之前：" + content);
         // 加密
@@ -44,7 +44,7 @@ public class CommonTest {
         String hexStrResult = AESEncrypUtil.encrypt(content);
         System.out.println("16进制的密文："  + hexStrResult);
 
-        //如果的到的是16进制密文，别忘了先转为2进制再解密
+//        如果的到的是16进制密文，别忘了先转为2进制再解密
         byte[] twoStrResult = ParseSystemUtil.parseHexStr2Byte(hexStrResult);
 
         // 解密

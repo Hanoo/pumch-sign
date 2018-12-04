@@ -34,39 +34,45 @@
 <script src="assets/js/jquery-1.11.1.min.js"></script>
 <script src="assets/js/common.js"></script>
 <script>
-    var signInId = ${signIn.id};
-    $(".btn-primary").on("click", function() {
-        var score = $("#scorer").val();
-        if(score=="请选择") {
-            alert("请选择分数");
-            return false;
-        } else {
-            var score = $("#scorer").val();
-            if(!/^\d+$/.test(score)) {
-                alert("不是整数");
-                return false;
-            } else if(score<0 || score>10) {
-                alert("评分应大于1小于10！");
-                return false;
-            }
-            $.ajax({
-                type: 'post', // 提交方式 get/post
-                url: '${pageContext.request.contextPath}/s/score',
-                contentType: 'application/json;charset=UTF-8',
-                data:JSON.stringify({"signInId":signInId, "score":score}),
-                dataType: "json",
-                success: function(data) {
-                    if(data.error) {
-                        alert("接口访问异常！");
-                    } else {
-                        window.location = 'success';
-                    }
-                },
-                error: function(data){
-                    console.log(data.error);
-                    alert("系统内部错误，请重试。");
-                }
-            });
+    $(document).ready(function () {
+        var score = '${signIn.score}';
+        if(score) {
+            $("#scorer").val(score);
         }
+        var signInId = ${signIn.id};
+        $(".btn-primary").on("click", function() {
+            var score = $("#scorer").val();
+            if(score=="请选择") {
+                alert("请选择分数");
+                return false;
+            } else {
+                var score = $("#scorer").val();
+                if(!/^\d+$/.test(score)) {
+                    alert("不是整数");
+                    return false;
+                } else if(score<0 || score>10) {
+                    alert("评分应大于1小于10！");
+                    return false;
+                }
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '${pageContext.request.contextPath}/s/score',
+                    contentType: 'application/json;charset=UTF-8',
+                    data:JSON.stringify({"signInId":signInId, "score":score}),
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.error) {
+                            alert("接口访问异常！");
+                        } else {
+                            window.location = 'success';
+                        }
+                    },
+                    error: function(data){
+                        console.log(data.error);
+                        alert("系统内部错误，请重试。");
+                    }
+                });
+            }
+        });
     });
 </script>
