@@ -11,23 +11,25 @@
     <link rel="stylesheet" href="assets/css/mobile.css">
 </head>
 <body>
-<div class="head">
-    <div class="text-center logo">课程评分</div>
-    <div class="pull-right head-nav">
-        <a type="button" href="javascript:history.back()">返回</a>
-    </div>
-</div>
 
-<div class="container contaner-l text-center">
-    <h3>${signIn.courseName}</h3>
-    <p></p>
-    <div class="text-center in-5">
-        请评分：<input type="text" class="form-control in-5" placeholder="请输入1到10的整数" id="scorer">
+    <div class="head">
+        <div class="text-center logo">课程评分</div>
+        <div class="pull-right head-nav">
+            <a type="button" href="javascript:history.back()">返回</a>
+        </div>
     </div>
-</div>
-<div class=" text-center tj col-md-1">
-    <a class="btn btn-primary btn-lg btn-block btn-tj">提交</a>
-</div>
+
+    <div class="container-fluid text-center">
+        <h3 class="name">${signIn.courseName}</h3>
+        <p class="subject" ></p>
+        <div class="text-center in-5">
+            <span>请评分：</span>
+            <input type="text" class="form-input" placeholder="请输入分值" id="scorer">
+        </div>
+        <div class=" text-center tj col-md-1">
+            <a class="btn btn-primary btn-lg btn-block btn-tj">提交</a>
+        </div>
+    </div>
 
 </body>
 </html>

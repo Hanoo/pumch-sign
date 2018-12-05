@@ -9,18 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/mobile.css">
-    <title>列表</title>
+    <title>我的签到</title>
 </head>
 <body class="bj">
     <div class="head">
         <div class="text-center logo">我的签到</div>
     </div>
-    <div class="search">
-        <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status" placeholder="请输入搜索内容">
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-    </div>
-    <div class="con-list" id="container">
-        <ul id="square"></ul>
+    <div class="container-fluid">
+        <div class="search">
+            <input type="text" class="form-control" id="courseName" aria-describedby="inputSuccess2Status" placeholder="请输入搜索课程">
+            <a class="btn btn-search">搜索</a>
+        </div>
+        <div class="con-list" id="container">
+            <ul id="square"></ul>
+            <div class="text-center more">
+                <a type="text" href="javascript:void(0);" id="loadMore">加载更多</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
@@ -43,6 +48,17 @@
             window.location = "s/score/"+signInId;
         });
 
+        $("#loadMore").on("click", function(){
+            $(this).html("加载中~");
+            var pageCount = Math.ceil(queryParam.totalRecord/queryParam.pageSize);
+            if(queryParam.currentPageIndex<pageCount){
+                queryParam.currentPageIndex++;
+                loadNext(queryParam);
+                $(this).html("加载更多");
+            } else {
+                $(this).html("没有更多了").disable();
+            }
+        });
     });
 
     // 生成html内容
@@ -87,6 +103,7 @@
                 if(result.error) {
                     alert("接口访问异常！");
                 } else {
+                    $.extend(queryParam, result);
                     buildLi(result.data);
                 }
             },
