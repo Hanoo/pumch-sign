@@ -23,10 +23,9 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.pumch.web.model.SignIn">
-        insert into sign_in (id, course_id, signer_id,
-        sign_in_time, score_time, score
-        )
-        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
+        insert into sign_in (id, course_id, signer_id, sign_in_time, score_time, score)
+        values (
+        #{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
         #{signInTime,jdbcType=TIMESTAMP}, #{scoreTime,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER}
         )
     </insert>
@@ -111,10 +110,10 @@
         where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND course.t_id = #{tId, jdbcType=BIGINT}
         <if test="courseName != null">
-            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+            AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
         </if>
         ORDER BY sign_in.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -125,10 +124,10 @@
         where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND course.t_id = #{tId, jdbcType=BIGINT}
         <if test="courseName != null">
-            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+            AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
         </if>
     </select>
 
@@ -138,10 +137,10 @@
         where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
         <if test="courseName != null">
-            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+            AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
         </if>
         ORDER BY sign_in.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -152,10 +151,10 @@
         where signer_id=ps_user.id and sign_in.course_id=course.id
         AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
         <if test="courseName != null">
-            course.course_name LIKE #{courseName,jdbcType=VARCHAR},
+            AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            ps_user.sName LIKE #{sName,jdbcType=VARCHAR},
+            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
         </if>
     </select>
 

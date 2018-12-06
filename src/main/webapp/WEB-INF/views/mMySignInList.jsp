@@ -56,7 +56,17 @@
                 loadNext(queryParam);
                 $(this).html("加载更多");
             } else {
-                $(this).html("没有更多了").disable();
+                $(this).html("没有更多了");
+            }
+        });
+
+        $(".btn-search").on("click", function(){
+            var courseName = $("#courseName").val();
+            if(courseName) {
+                $("#square").empty();
+                queryParam.courseName = courseName;
+                queryParam.currentPageIndex = 1;
+                loadNext(queryParam);
             }
         });
     });
