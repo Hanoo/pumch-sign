@@ -7,10 +7,18 @@
         <result column="signer_id" jdbcType="BIGINT" property="signerId" />
         <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime" />
         <result column="score_time" jdbcType="TIMESTAMP" property="scoreTime" />
-        <result column="score" jdbcType="INTEGER" property="score" />
+        <result column="score_1" jdbcType="INTEGER" property="score1" />
+        <result column="score_2" jdbcType="INTEGER" property="score2" />
+        <result column="score_3" jdbcType="INTEGER" property="score3" />
+        <result column="score_4" jdbcType="INTEGER" property="score4" />
+        <result column="score_5" jdbcType="INTEGER" property="score5" />
+        <result column="score_6" jdbcType="INTEGER" property="score6" />
+        <result column="score_7" jdbcType="INTEGER" property="score7" />
+        <result column="score_8" jdbcType="INTEGER" property="score8" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, course_id, signer_id, sign_in_time, score_time, score
+        id, course_id, signer_id, sign_in_time, score_time, score_1, score_2, score_3, score_4,
+        score_5, score_6, score_7, score_8
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -23,11 +31,16 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.pumch.web.model.SignIn">
-        insert into sign_in (id, course_id, signer_id, sign_in_time, score_time, score)
-        values (
-        #{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
-        #{signInTime,jdbcType=TIMESTAMP}, #{scoreTime,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER}
-        )
+        insert into sign_in (id, course_id, signer_id,
+        sign_in_time, score_time, score_1,
+        score_2, score_3, score_4,
+        score_5, score_6, score_7,
+        score_8)
+        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{signerId,jdbcType=BIGINT},
+        #{signInTime,jdbcType=TIMESTAMP}, #{scoreTime,jdbcType=TIMESTAMP}, #{score1,jdbcType=INTEGER},
+        #{score2,jdbcType=INTEGER}, #{score3,jdbcType=INTEGER}, #{score4,jdbcType=INTEGER},
+        #{score5,jdbcType=INTEGER}, #{score6,jdbcType=INTEGER}, #{score7,jdbcType=INTEGER},
+        #{score8,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="cn.pumch.web.model.SignIn">
         insert into sign_in
@@ -47,8 +60,29 @@
             <if test="scoreTime != null">
                 score_time,
             </if>
-            <if test="score != null">
-                score,
+            <if test="score1 != null">
+                score_1,
+            </if>
+            <if test="score2 != null">
+                score_2,
+            </if>
+            <if test="score3 != null">
+                score_3,
+            </if>
+            <if test="score4 != null">
+                score_4,
+            </if>
+            <if test="score5 != null">
+                score_5,
+            </if>
+            <if test="score6 != null">
+                score_6,
+            </if>
+            <if test="score7 != null">
+                score_7,
+            </if>
+            <if test="score8 != null">
+                score_8,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -67,8 +101,29 @@
             <if test="scoreTime != null">
                 #{scoreTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="score != null">
-                #{score,jdbcType=INTEGER},
+            <if test="score1 != null">
+                #{score1,jdbcType=INTEGER},
+            </if>
+            <if test="score2 != null">
+                #{score2,jdbcType=INTEGER},
+            </if>
+            <if test="score3 != null">
+                #{score3,jdbcType=INTEGER},
+            </if>
+            <if test="score4 != null">
+                #{score4,jdbcType=INTEGER},
+            </if>
+            <if test="score5 != null">
+                #{score5,jdbcType=INTEGER},
+            </if>
+            <if test="score6 != null">
+                #{score6,jdbcType=INTEGER},
+            </if>
+            <if test="score7 != null">
+                #{score7,jdbcType=INTEGER},
+            </if>
+            <if test="score8 != null">
+                #{score8,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -87,21 +142,49 @@
             <if test="scoreTime != null">
                 score_time = #{scoreTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="score != null">
-                score = #{score,jdbcType=INTEGER},
+            <if test="score1 != null">
+                score_1 = #{score1,jdbcType=INTEGER},
+            </if>
+            <if test="score2 != null">
+                score_2 = #{score2,jdbcType=INTEGER},
+            </if>
+            <if test="score3 != null">
+                score_3 = #{score3,jdbcType=INTEGER},
+            </if>
+            <if test="score4 != null">
+                score_4 = #{score4,jdbcType=INTEGER},
+            </if>
+            <if test="score5 != null">
+                score_5 = #{score5,jdbcType=INTEGER},
+            </if>
+            <if test="score6 != null">
+                score_6 = #{score6,jdbcType=INTEGER},
+            </if>
+            <if test="score7 != null">
+                score_7 = #{score7,jdbcType=INTEGER},
+            </if>
+            <if test="score8 != null">
+                score_8 = #{score8,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="cn.pumch.web.model.SignIn">
-        update sign_in
-        set course_id = #{courseId,jdbcType=BIGINT},
-          signer_id = #{signerId,jdbcType=BIGINT},
-          sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
-          score_time = #{scoreTime,jdbcType=TIMESTAMP},
-          score = #{score,jdbcType=INTEGER}
-        where id = #{id,jdbcType=BIGINT}
-    </update>
+    update sign_in
+    set course_id = #{courseId,jdbcType=BIGINT},
+      signer_id = #{signerId,jdbcType=BIGINT},
+      sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+      score_time = #{scoreTime,jdbcType=TIMESTAMP},
+      score_1 = #{score1,jdbcType=INTEGER},
+      score_2 = #{score2,jdbcType=INTEGER},
+      score_3 = #{score3,jdbcType=INTEGER},
+      score_4 = #{score4,jdbcType=INTEGER},
+      score_5 = #{score5,jdbcType=INTEGER},
+      score_6 = #{score6,jdbcType=INTEGER},
+      score_7 = #{score7,jdbcType=INTEGER},
+      score_8 = #{score8,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 
     <!-- 以下内容为手动添加 -->
     <select id="selectByTIdInPage" resultMap="BaseResultMap">
@@ -132,7 +215,8 @@
     </select>
 
     <select id="selectBySIdInPage" resultMap="BaseResultMap">
-        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.score, sign_in.score_time
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,
+        sign_in.score_1,sign_in.score_2,sign_in.score_3,sign_in.score_4,sign_in.score_5,sign_in.score_6,sign_in.score_7,sign_in.score_8, sign_in.score_time
         from sign_in, course, ps_user
         where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
         AND sign_in.signer_id = #{signerId, jdbcType=VARCHAR}
@@ -169,7 +253,8 @@
     </select>
 
     <select id="selectFullSignIn" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.score, sign_in.score_time
+        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.course_id,
+        sign_in.score_1,sign_in.score_2,sign_in.score_3,sign_in.score_4,sign_in.score_5,sign_in.score_6,sign_in.score_7,sign_in.score_8, sign_in.score_time
         from sign_in, course, ps_user
         where sign_in.signer_id=ps_user.id
         AND sign_in.course_id=course.id

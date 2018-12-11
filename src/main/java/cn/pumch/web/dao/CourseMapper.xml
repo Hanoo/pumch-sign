@@ -112,4 +112,11 @@
         from course
         where course_name=#{courseName, jdbcType=VARCHAR}
     </select>
+    <select id="selectTNameByCourseId" resultType="java.lang.String">
+        select
+        IFNULL(ps_user.nick_name,"暂无") as tName
+        from course
+        LEFT JOIN ps_user on course.t_id=ps_user.id
+        where course.id = #{courseId, jdbcType=BIGINT}
+    </select>
 </mapper>

@@ -93,4 +93,9 @@ public class CourseServiceImpl implements CourseService {
             }
         }
     }
+
+    @Override
+    public String getTNameByCourseId(Long courseId) {
+        return courseMapper.selectTNameByCourseId(courseId);
+    }
 }

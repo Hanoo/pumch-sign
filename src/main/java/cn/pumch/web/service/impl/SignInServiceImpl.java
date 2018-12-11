@@ -120,13 +120,20 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public boolean doScore(Long signInId, int score) {
-        if(signInId==0 || score==0) {
+    public boolean doScore(Long signInId, Integer[] scores) {
+        if(signInId==0 || scores.length!=8) {
             return false;
         }
         SignIn signIn = new SignIn();
         signIn.setId(signInId);
-        signIn.setScore(score);
+        signIn.setScore1(scores[0]);
+        signIn.setScore2(scores[1]);
+        signIn.setScore3(scores[2]);
+        signIn.setScore4(scores[3]);
+        signIn.setScore5(scores[4]);
+        signIn.setScore6(scores[5]);
+        signIn.setScore7(scores[6]);
+        signIn.setScore8(scores[7]);
         signIn.setScoreTime(new Date());
 
         return signInMapper.updateByPrimaryKeySelective(signIn)>0;

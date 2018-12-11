@@ -52,4 +52,11 @@ public interface CourseService {
      * @return
      */
     String createCourse(String courseName, Long tId);
+
+    /**
+     * 根据课程ID查询教师的姓名
+     * @param courseId
+     * @return
+     */
+    String getTNameByCourseId(Long courseId);
 }

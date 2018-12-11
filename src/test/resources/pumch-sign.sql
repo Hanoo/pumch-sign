@@ -88,9 +88,9 @@ insert  into user_role(id,user_id,role_id) values (1,1,1);
 
 DROP TABLE IF EXISTS course;
 CREATE TABLE course (
-  id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
+  id            BIGINT(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
   course_name   VARCHAR(50) NOT NULL COMMENT '课程名称',
-  t_id BIGINT(20) COMMENT '任课教师ID',
+  t_id          BIGINT(20) COMMENT '任课教师ID',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='课程表';
 
@@ -101,6 +101,13 @@ CREATE TABLE sign_in (
   signer_id    bigint(20) NOT NULL COMMENT '签到人ID',
   sign_in_time DATETIME   NOT NULL COMMENT '签到时间',
   score_time   DATETIME   COMMENT '评分时间',
-  score        int(3)     COMMENT '分值',
+  score_1      int(1)     COMMENT '课程总体质量',
+  score_2      int(1)     COMMENT '课前对授课内容的掌握程度',
+  score_3      int(1)     COMMENT '课后对授课内容的掌握程度',
+  score_4      int(1)     COMMENT '课程对临床工作的帮助',
+  score_5      int(1)     COMMENT '您觉得教师准备是否充分',
+  score_6      int(1)     COMMENT '教师准备教材的PPT是否重点突出，安排得当',
+  score_7      int(1)     COMMENT '教师讲课的语音、语调、语速适中，讲课生动，容易理解',
+  score_8      int(1)     COMMENT '我愿意参加该讲师主讲的课程',
   PRIMARY KEY (id)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到及课程评价表';

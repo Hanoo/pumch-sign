@@ -165,3 +165,18 @@ a:active{
     display: inline-block;
     width: 30%;
 }
+.star{
+    color:#ff0000;
+    position: relative;
+    top: 7px;
+    font-size:1.5em;
+    margin-right: 0.5em;
+}
+.wen-tj{
+    margin: 5em 0;
+}
+.checkbox label, .radio label {
+
+    width: 100%;
+}
+

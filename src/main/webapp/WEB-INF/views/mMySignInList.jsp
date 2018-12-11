@@ -83,18 +83,18 @@
                 displayTime = "签到时间:" + data[i].signInTime;
             }
 
-            var score = data[i].score;
+            var score1 = data[i].score1;
             var displayScore;
-            if(score) {
-                displayScore = score;
+            if(score1) {
+                displayScore = "已评价";
             } else {
-                displayScore = "未评分";
+                displayScore = "未评价";
             }
             var li = "<li><div class='pull-left text-list'><h5>课程名称：" +
                 data[i].courseName + "</h5><p>" +
                 displayTime + "</p></div>" +
                 "<div class='pull-right text-nav signRow' id='" + data[i].id +
-                "'><div class=\"pull-right\"><h6>评分</h6><p><span class=\"yellow\">" +
+                "'><div class=\"pull-right\"><h6>调查问卷</h6><p><span class=\"yellow\">" +
                 displayScore + "</span></p>" +
                 "</div></div><div class=\"clearfix\"></div></li>"
             square.append(li);

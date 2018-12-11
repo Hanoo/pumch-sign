@@ -60,4 +60,11 @@ public interface CourseMapper {
      * @return
      */
     int selectCourseByName(@Param("courseName") String courseName);
+
+    /**
+     * 根据课程ID查询任课教师的姓名
+     * @param courseId
+     * @return
+     */
+    String selectTNameByCourseId(@Param("courseId") Long courseId);
 }

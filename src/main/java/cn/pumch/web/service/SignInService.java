@@ -75,8 +75,8 @@ public interface SignInService {
     /**
      * 为签到的课程打分
      * @param signInId 签到表主键
-     * @param score 分数
+     * @param scores 问卷调查评分
      * @return
      */
-    boolean doScore(Long signInId, int score);
+    boolean doScore(Long signInId, Integer[] scores);
 }

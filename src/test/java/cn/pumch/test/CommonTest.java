@@ -3,9 +3,12 @@ package cn.pumch.test;
 import cn.pumch.web.util.AESEncrypUtil;
 import cn.pumch.web.util.ParseSystemUtil;
 import cn.pumch.web.util.QRCodeUtil;
+import net.sf.json.JSONArray;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonTest {
     @Test
@@ -50,5 +53,22 @@ public class CommonTest {
         // 解密
         byte[] decrypt = AESEncrypUtil.decrypt(twoStrResult);
         System.out.println("解密后的内容：" + new String(decrypt));
+    }
+
+    @Test
+    public void testJSONArray() {
+        List<Integer> list = new ArrayList<>();
+        list.add(111);
+        list.add(222);
+        list.add(333);
+
+        System.out.println(JSONArray.fromObject(list).toString());
+
+        Integer[] integers = new Integer[3];
+        JSONArray.fromObject(list).toArray(integers);
+
+        for(Integer i : integers) {
+            System.out.println(i);
+        }
     }
 }

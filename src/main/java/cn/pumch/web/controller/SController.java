@@ -3,6 +3,7 @@ package cn.pumch.web.controller;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.model.SignIn;
 import cn.pumch.web.redis.JedisWrap;
+import cn.pumch.web.service.CourseService;
 import cn.pumch.web.service.SignInService;
 import cn.pumch.web.util.CommonUtils;
 import net.sf.json.JSONArray;
@@ -30,6 +31,9 @@ public class SController {
 
     @Autowired
     private SignInService signInService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private JedisWrap jedisService;
@@ -122,8 +126,9 @@ public class SController {
     @ResponseBody
     public JSONObject doScore(@RequestBody JSONObject scoreParam) {
         Long signInId = scoreParam.getLong("signInId");
-        int score = scoreParam.getInt("score");
-        if (signInService.doScore(signInId, score)) {
+        Integer[] scores = new Integer[8];
+        scoreParam.getJSONArray("scores").toArray(scores);
+        if (signInService.doScore(signInId, scores)) {
             scoreParam.put("data", "success");
         } else {
             scoreParam.put("data", "error");
@@ -134,8 +139,11 @@ public class SController {
     @RequestMapping(value = "/score/{signInId}", method = RequestMethod.GET)
     public String mScore(@PathVariable Long signInId, HttpServletRequest request) {
         SignIn signIn = signInService.getPrettyInfoById(signInId);
-        request.setAttribute("signIn", signIn);
-        return "mScore";
+        String tName = courseService.getTNameByCourseId(signIn.getCourseId());
+
+        request.setAttribute("tName", tName);
+        request.setAttribute("signIn", JSONObject.fromObject(signIn));
+        return "questionnaire";
     }
 
     private final static Logger logger = LoggerFactory.getLogger(SController.class);
