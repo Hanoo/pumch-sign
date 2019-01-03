@@ -59,7 +59,7 @@ CREATE TABLE ps_user (
   password    CHAR(64) DEFAULT NULL COMMENT '密码',
   nick_name   VARCHAR(50) COMMENT '昵称',
   sex         CHAR(1) DEFAULT '1' COMMENT '性别',
-  id_no       VARCHAR(18) DEFAULT NULL  COMMENT '身份证号',
+  id_no       VARCHAR(18) UNIQUE DEFAULT NULL COMMENT '学号/工号',
   u_state     VARCHAR(2) DEFAULT NULL COMMENT '状态',
   create_time DATETIME DEFAULT NULL COMMENT '创建时间',
   login_time  DATETIME DEFAULT NULL COMMENT '上次登录时间',

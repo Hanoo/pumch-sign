@@ -6,6 +6,7 @@ import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.core.generic.GenericDao;
 import cn.pumch.web.model.Role;
+import cn.pumch.web.model.User;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.RoleService;
 import org.apache.commons.lang.StringUtils;
@@ -59,10 +60,11 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
     }
 
     @Override
-    public boolean doReg(PsUser record) {
-        if(null!=record) {
-            int result = mapper.insert(record);
-            return result>0;
+    public boolean doReg(PsUser user) {
+        if(null!=user) {
+            int result1 = mapper.insertSelective(user);
+            boolean result2 = roleService.userRoleAssociated(user.getId(), UserType.S.getRole_id());
+            return result1>0 && result2;
         }
         return false;
     }
@@ -148,6 +150,11 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
         int result1 = mapper.insertSelective(user);
         boolean result2 = roleService.userRoleAssociated(user.getId(), roleId);
         return result1>0 && result2;
+    }
+
+    @Override
+    public int getUserCountByIdNo(String idNo) {
+        return mapper.selectCountByConditions(null, null, idNo, null, null, null, null);
     }
 
     @Override

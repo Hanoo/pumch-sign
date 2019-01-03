@@ -243,6 +243,75 @@ public class CommonController {
         }
     }
 
+    @RequestMapping("/web/register")
+    public String regPage(HttpServletRequest request) {
+        if (CommonUtils.isMobileAgent(request.getHeader("user-agent"))) {
+            return "mRegister";
+        }
+        return "register";
+    }
+
+    @RequestMapping("/web/doReg")
+    @ResponseBody
+    public JSONObject doRegister(@RequestBody JSONObject queryParam, HttpServletRequest request){
+        if(checkKaptcha(request, queryParam)) {
+            return queryParam;
+        }
+
+        String loginName = queryParam.getString("loginName");
+        PsUser user = userService.getUserByLoginName(loginName);
+        if(null!=user) {
+            queryParam.put("result", "error");
+            queryParam.put("resultInfo", "登录名重复");
+            return queryParam;
+        }
+
+        String idNo = queryParam.getString("idNo");
+        if(userService.getUserCountByIdNo(idNo)>0) {
+            queryParam.put("result", "error");
+            queryParam.put("resultInfo", "学号重复");
+            return queryParam;
+        }
+
+        String nickName = queryParam.getString("nickName");
+        String password = queryParam.getString("password");
+
+        user = new PsUser();
+        user.setLoginName(loginName);
+        user.setPassword(password);
+        user.setNickName(nickName);
+        user.setCreateTime(new Date());
+        user.setIdNo(idNo);
+        user.setuState("1");
+        boolean result = userService.doReg(user);
+        if(result) {
+            logger.info("学号为："+idNo+"的同学："+nickName +"注册成功。");
+        } else {
+            logger.warn("学号为："+idNo+"的同学："+nickName +"注册失败！");
+        }
+
+        queryParam.put("result", "success");
+        return queryParam;
+    }
+
+    /**
+     * 检查用户验证码
+     * @param request
+     * @param json
+     * @return
+     */
+    private boolean checkKaptcha(HttpServletRequest request, JSONObject json) {
+        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        String kaptchaReceived = json.getString("kaptcha");
+
+        boolean result = kaptchaReceived == null || !kaptchaReceived.equalsIgnoreCase(kaptchaExpected);
+        if(result) {
+            json.put("result", "error");
+            json.put("resultInfo", "验证码错误");
+        }
+        return result;
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
 
     private final static String REMEMBERME_TOKEN_NAME = "Pum_Session";

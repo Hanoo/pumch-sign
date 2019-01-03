@@ -128,4 +128,11 @@ public interface PsUserService extends GenericService<PsUser, Long> {
      * @return
      */
     boolean createUser(PsUser user, Long roleId);
+
+    /**
+     * 查询指定学号或者工号的用户数量
+     * @param idNo
+     * @return
+     */
+    int getUserCountByIdNo(String idNo);
 }

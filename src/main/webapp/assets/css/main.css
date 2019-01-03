@@ -127,6 +127,7 @@ em, i {
     width: 68px;
     margin-left: 5px;
     font-size: 12px;
+    display: inline-block;
 }
 .form-horizontal .control-label {
     padding-top: 7px;
@@ -408,6 +409,15 @@ th,td{
 }
 .menu_body a:active{
     background-color:#428bca;
+}
+.form-reg {
+    max-width: 480px;
+    height: 470px;
+    padding: 55px 5px;
+    margin: 20px auto;
+    background-color: #226fb2;
+    border: 3px solid #509ada;
+    border-radius: 15px;
 }
 /*结束*/
 

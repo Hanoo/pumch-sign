@@ -31,6 +31,7 @@
             <%--<div class="clearfix"></div>--%>
             <input type="checkbox" id="rememberMe" /> 记得我
             <span id="message"></span>
+            <a href="web/register"><span style="float:right;color: #01AAED">新用户注册</span></a>
         </div>
         <div class="input-m">
             <a class="btn btn-lg btn-info btn-block" type="submit" href="javascript:void(0);">登录</a>

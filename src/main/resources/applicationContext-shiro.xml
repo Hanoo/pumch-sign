@@ -31,6 +31,8 @@
                 /web/login = anon
                 /web/nameCheck/* = anon
                 /web/userList = anon
+                /web/register = anon
+                /web/kaptcha = anon
                 <!-- 其他资源需要认证 -->
                 /mt/* = roles[mt]
                 /mt/** = roles[mt]

@@ -30,6 +30,7 @@
                 <div class="col-sm-offset-3 col-sm-7 remember">
                     <input type="checkbox" id="rememberMe" /> 记得我
                     <span id="message" style="display: none;color:red">  </span>
+                    <a href="web/register"><span style="float:right">新用户注册</span></a>
                 </div>
                 <div class="col-sm-offset-3 col-sm-7">
                     <a href="javascript:void(0);" type="button" class="btn btn-warning">登录</a>
