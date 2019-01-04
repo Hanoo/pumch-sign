@@ -82,7 +82,7 @@
             async: false,
             success:function(msg){
                 if(msg.result=="error"){
-                    errorInfo(msg.resultInfo, $("#message"));
+                    alert(msg.resultInfo);
                 }else{
                     window.location.href= genUrl(msg.resultInfo);
                 }

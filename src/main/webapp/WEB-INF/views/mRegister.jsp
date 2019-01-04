@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录</title>
+    <title>注册</title>
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/mLogin.css" rel="stylesheet" />
     <!-- My styles -->
@@ -15,7 +15,7 @@
 <body>
 <div class="container contaner-l">
     <form class="form-signin login-c ">
-        <h4 class="form-signin-heading text-center">用户登录</h4>
+        <h4 class="form-signin-heading text-center">学生注册</h4>
 
         <div class="input-m">
             <label class="sr-only">登录名</label>
@@ -41,7 +41,7 @@
             <input type="text" class="form-control yzm-w" id="kaptcha" placeholder="验证码">&nbsp;
             <img class="yzm" style="" src="web/kaptcha" title="看不清，点击换一张" tabindex="6">
             <div class="clearfix"></div>
-            <span id="message"></span>
+            &nbsp;<span id="message" style="color: green"></span>
         </div>
         <div class="input-m">
             <a class="btn btn-lg btn-info btn-block" type="submit" href="javascript:void(0);">注册</a>
@@ -111,9 +111,11 @@
             async: false,
             success:function(msg){
                 if(msg.result=="error"){
-                    alert(msg.resultInfo);
+                    $("#message").text(msg.resultInfo).css("color", "red");
+                    blink($("#message"));
                 }else{
-                    window.location.href= "web/login";
+                    $("#message").text("注册成功！请使用新账号登录系统").css("color", "green");
+                    setTimeout('window.location.href= "web/login"', 3000);
                 }
             },
             error:function(msg){
@@ -121,5 +123,20 @@
             }
 
         });
+    }
+
+    var i = 6;
+    function blink(selector){
+        if(i>0) {
+            $(selector).fadeOut('slow', function(){
+                $(this).fadeIn('slow', function () {
+                    blink(this);
+                });
+            });
+            i--;
+        } else {
+            $(selector).fadeOut('slow');
+            i = 6;
+        }
     }
 </script>

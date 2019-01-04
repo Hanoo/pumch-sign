@@ -122,6 +122,7 @@
                 if(msg.result=="error"){
                     alert(msg.resultInfo);
                 }else{
+                    alert("注册成功！将转到登录界面");
                     window.location.href= "web/login";
                 }
             },
