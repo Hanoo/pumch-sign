@@ -81,7 +81,7 @@
     <!-- 手动添加 -->
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select
-        course.id, course.course_name, IFNULL(ps_user.nick_name,"暂无") as tName
+        course.id, course.course_name, course_type, IFNULL(ps_user.nick_name,"暂无") as tName
         from course
         LEFT JOIN ps_user on course.t_id=ps_user.id
         <trim prefix="where" prefixOverrides="AND">

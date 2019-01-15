@@ -82,7 +82,7 @@
                     </div>
                     <div class="">
                         <a class="btn btn-primary btn-import" href="javascript:void(0);" role="button">
-                            <img class="menu-icon" src="assets/image/search.png" width="13">导入
+                            <img class="menu-icon" src="assets/image/Add.png" width="13">导入
                         </a>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         <th>序号</th>
                         <th>登录名</th>
                         <th>姓名</th>
-                        <th>身份证号</th>
+                        <th>学号/工号</th>
                         <th>创建时间</th>
                         <th>状态</th>
                     </tr>
@@ -144,6 +144,7 @@
 </body>
 </html>
 <script src="assets/js/jquery-1.11.1.min.js"></script>
+<script src="assets/js/jquery.form.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/lay/layui.js"></script>
 <script src="assets/lay/lay/modules/laypage.js"></script>
@@ -278,7 +279,25 @@
                 alert("选择Excel格式的文件导入！");
                 return false;
             }
-            $("#excelForm").submit();
+//            $("#excelForm").submit();
+            $('#excelForm').ajaxSubmit({
+                type: 'post',
+                url:'mt/ajaxImport',
+                dataType: 'text',
+                success: function (msg){
+                    if(msg=='success') {
+                        if(confirm("导入成功，是否跳转到课程列表？")) {
+                            window.location.href='mt/courseList';
+                        } else {
+                            location.reload();
+                        }
+                    }
+                },
+                error: function (){
+                    alert("导入excel出错！");
+                }
+            });
+
         });
 
     });

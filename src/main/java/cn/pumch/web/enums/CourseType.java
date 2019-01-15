@@ -2,7 +2,7 @@ package cn.pumch.web.enums;
 
 public enum CourseType {
 
-    REQUIRED("1", "必修课"), OPTIONAL("0", "选修课");
+    REQUIRED("1", "必修"), OPTIONAL("0", "选修");
 
     CourseType(String courseCode, String displayWord) {
         this.courseCode = courseCode;

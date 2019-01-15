@@ -89,7 +89,7 @@ insert  into user_role(id,user_id,role_id) values (1,1,1);
 DROP TABLE IF EXISTS course;
 CREATE TABLE course (
   id            BIGINT(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
-  course_name   VARCHAR(50) NOT NULL COMMENT '课程名称',
+  course_name   VARCHAR(250) NOT NULL COMMENT '课程名称',
   course_type   CHAR(1) COMMENT '课程类型，选修或者必修',
   t_id          BIGINT(20) COMMENT '任课教师ID',
   PRIMARY KEY (id)

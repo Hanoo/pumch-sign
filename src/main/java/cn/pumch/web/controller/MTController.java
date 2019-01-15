@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -314,4 +315,43 @@ public class MTController {
         return "tList";
     }
 
+    @RequestMapping(value = "/ajaxImport", method = RequestMethod.POST)
+    @ResponseBody
+    public String ajaxImport(HttpServletRequest request) throws Exception{
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
+        MultipartFile file = multipartRequest.getFile("upfile");
+
+        if(file.isEmpty()){
+            throw new Exception("文件体不存在！");
+        }
+        InputStream in = file.getInputStream();
+        List<List<Object>> rowList = MSExcelReader.getBankListByExcel(in, file.getOriginalFilename());
+        in.close();
+
+        //该处可调用service相应方法进行数据保存到数据库中，现只对数据输出
+        for (int i = 0; i < rowList.size(); i++) {
+            List<Object> row = rowList.get(i);
+            String tName = (String) row.get(1);
+            Long tUserId = userService.createTUserWithNickName(tName);
+
+            String cName = (String) row.get(2);
+            String displayWord = (String) row.get(3);
+            String courseType;
+            if(CourseType.REQUIRED.getDisplayWord().equals(displayWord)) {
+                courseType = CourseType.REQUIRED.getCourseCode();
+            } else {
+                courseType = CourseType.OPTIONAL.getCourseCode();
+            }
+
+            String result = courseService.createCourse(cName, courseType, tUserId);
+            if("success".equals(result) || "duplicateName".equals(result)) {
+                logger.info("课程：" + cName + "创建成功，" + "任课教师为："+ tName);
+            } else {
+                logger.warn("课程：" + cName + "创建失败！");
+            }
+        }
+
+        return "success";
+    }
 }
