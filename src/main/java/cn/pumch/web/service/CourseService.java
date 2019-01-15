@@ -51,7 +51,7 @@ public interface CourseService {
      * @param tId
      * @return
      */
-    String createCourse(String courseName, Long tId);
+    String createCourse(String courseName, String courseType, Long tId);
 
     /**
      * 根据课程ID查询教师的姓名

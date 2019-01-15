@@ -76,16 +76,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String createCourse(String courseName, Long tId) {
+    public String createCourse(String courseName, String courseType, Long tId) {
         int courseCount = courseMapper.selectCourseByName(courseName);
         if(courseCount>0) {
             return "duplicateName";
         } else {
             Course course = new Course();
             course.setCourseName(courseName);
+            course.setCourseType(courseType);
             course.settId(tId);
 
-            int result = courseMapper.insert(course);
+            int result = courseMapper.insertSelective(course);
             if(result>0) {
                 return "success";
             } else {

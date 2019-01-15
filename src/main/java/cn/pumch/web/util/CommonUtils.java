@@ -3,6 +3,11 @@ package cn.pumch.web.util;
 import cn.pumch.core.util.JsonDateValueProcessor;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,5 +55,29 @@ public class CommonUtils {
             }
         }
         return false;
+    }
+
+    public static String pinyinTrans(String hanzi) {
+        StringBuilder pinyin = new StringBuilder();
+
+        for (int i = 0; i < hanzi.length(); i++) {
+            HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+            defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+            defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
+            char c = hanzi.charAt(i);
+            String[] pinyinArray = null;
+            try {
+                pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c, defaultFormat);
+            } catch (BadHanyuPinyinOutputFormatCombination e) {
+                e.printStackTrace();
+            }
+            if (pinyinArray != null) {
+                pinyin.append(pinyinArray[0]);
+            } else if (c != ' ') {
+                pinyin.append(hanzi.charAt(i));
+            }
+        }
+
+        return pinyin.toString().trim().toLowerCase();
     }
 }

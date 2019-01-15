@@ -90,6 +90,7 @@ DROP TABLE IF EXISTS course;
 CREATE TABLE course (
   id            BIGINT(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
   course_name   VARCHAR(50) NOT NULL COMMENT '课程名称',
+  course_type   CHAR(1) COMMENT '课程类型，选修或者必修',
   t_id          BIGINT(20) COMMENT '任课教师ID',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='课程表';

@@ -70,6 +70,22 @@
                         </div>
                     </div>
                 </div>
+                <hr class="clearfix">
+                <div class="col-md-4 ">
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label text-right text-list">Excel导入：</label>
+                        <div class="col-sm-7">
+                            <form method="POST" enctype="multipart/form-data" id="excelForm" action="mt/excelImport">
+                                <input type="file" id="upfile" name="upfile" class="form-control input2" placeholder="">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="">
+                        <a class="btn btn-primary btn-import" href="javascript:void(0);" role="button">
+                            <img class="menu-icon" src="assets/image/search.png" width="13">导入
+                        </a>
+                    </div>
+                </div>
                 <%--<div class="col-md-4">--%>
                     <%--<div class="form-group">--%>
                         <%--<label class="col-sm-2 control-label text-right text-list">状态：</label>--%>
@@ -249,6 +265,20 @@
             queryParam.startTime="";
             queryParam.endTime="";
             vue.request();
+        });
+
+        $(".btn-import").on("click", function(){
+            var fileDir = $("#upfile").val();
+            var suffix = fileDir.substr(fileDir.lastIndexOf("."));
+            if("" == fileDir){
+                alert("选择需要导入的Excel文件！");
+                return false;
+            }
+            if(".xls" != suffix && ".xlsx" != suffix ){
+                alert("选择Excel格式的文件导入！");
+                return false;
+            }
+            $("#excelForm").submit();
         });
 
     });

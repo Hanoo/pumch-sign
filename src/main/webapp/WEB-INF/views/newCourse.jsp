@@ -60,6 +60,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-5 control-label text-right text-list">课程类型：</label>
+                    <div class="col-sm-7">
+                        <select class="form-control input2" id="courseType">
+                            <option>请选择</option>
+                            <option value="1">必修</option>
+                            <option value="0">选修</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-5 control-label text-right text-list">任课教师：</label>
                     <div class="col-sm-7">
                         <select class="form-control input2" id="tId">
@@ -101,8 +111,13 @@
                 alert("请填写课程名称");
                 return false;
             }
+            var courseType = $("#courseType").val();
+            if('请选择' == courseType) {
+                alert("请选择课程类型");
+                return false;
+            }
 
-            var queryParam = {"tId":tId, "courseName":courseName};
+            var queryParam = {"tId":tId, "courseName":courseName, "courseType":courseType};
 
             $.ajax({
                 type: 'post',

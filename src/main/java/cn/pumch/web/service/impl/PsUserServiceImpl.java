@@ -9,6 +9,7 @@ import cn.pumch.web.model.Role;
 import cn.pumch.web.model.User;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.RoleService;
+import cn.pumch.web.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -143,18 +144,35 @@ public class PsUserServiceImpl extends GenericServiceImpl<PsUser, Long> implemen
 
     @Override
     @Transactional
-    public boolean createUser(PsUser user, Long roleId) {
+    public Long createUser(PsUser user, Long roleId) {
         user.setPassword(String.valueOf(defaultPassword.hashCode()));
         user.setCreateTime(new Date());
         user.setuState("1");
         int result1 = mapper.insertSelective(user);
         boolean result2 = roleService.userRoleAssociated(user.getId(), roleId);
-        return result1>0 && result2;
+        return (result1>0 && result2)?user.getId():0l;
     }
 
     @Override
     public int getUserCountByIdNo(String idNo) {
         return mapper.selectCountByConditions(null, null, idNo, null, null, null, null);
+    }
+
+    @Override
+    public Long createTUserWithNickName(String nickName) {
+        if(StringUtils.isNotEmpty(nickName)) {
+            PsUser user = mapper.selectByNickName(nickName);
+            if(null!=user) {
+                return user.getId();
+            } else {
+                user = new PsUser();
+                user.setLoginName(CommonUtils.pinyinTrans(nickName));
+                user.setNickName(nickName);
+                return createUser(user, UserType.T.getRole_id());
+            }
+        } else {
+            return 0l;
+        }
     }
 
     @Override

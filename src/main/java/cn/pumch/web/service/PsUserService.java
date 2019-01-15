@@ -125,9 +125,9 @@ public interface PsUserService extends GenericService<PsUser, Long> {
      * 创建用户并关联角色
      * @param user
      * @param roleId
-     * @return
+     * @return 创建用户的主键
      */
-    boolean createUser(PsUser user, Long roleId);
+    Long createUser(PsUser user, Long roleId);
 
     /**
      * 查询指定学号或者工号的用户数量
@@ -135,4 +135,11 @@ public interface PsUserService extends GenericService<PsUser, Long> {
      * @return
      */
     int getUserCountByIdNo(String idNo);
+
+    /**
+     * 根据姓名创建教师用户
+     * @param nickName
+     * @return
+     */
+    Long createTUserWithNickName(String nickName);
 }

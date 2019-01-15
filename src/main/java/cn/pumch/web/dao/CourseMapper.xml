@@ -4,10 +4,11 @@
     <resultMap id="BaseResultMap" type="cn.pumch.web.model.Course">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="course_type" jdbcType="CHAR" property="courseType"/>
         <result column="t_id" jdbcType="BIGINT" property="tId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, course_name, t_id
+        id, course_name, course_type, t_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -20,10 +21,8 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.pumch.web.model.Course">
-        insert into course (id, course_name, t_id
-          )
-        values (#{id,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{tId,jdbcType=BIGINT}
-          )
+        insert into course (id, course_name, course_type, t_id)
+        values (#{id,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{courseType,jdbcType=CHAR} #{tId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" parameterType="cn.pumch.web.model.Course">
         insert into course
@@ -33,6 +32,9 @@
             </if>
             <if test="courseName != null">
                 course_name,
+            </if>
+            <if test="courseType != null">
+                course_type,
             </if>
             <if test="tId != null">
                 t_id,
@@ -45,6 +47,9 @@
             <if test="courseName != null">
                 #{courseName,jdbcType=VARCHAR},
             </if>
+            <if test="courseType !=null">
+                #{courseType,jdbcType=CHAR},
+            </if>
             <if test="tId != null">
                 #{tId,jdbcType=BIGINT},
             </if>
@@ -56,6 +61,9 @@
             <if test="courseName != null">
                 course_name = #{courseName,jdbcType=VARCHAR},
             </if>
+            <if test="courseType != null">
+                course_type = #{courseType,jdbcType=CHAR},
+            </if>
             <if test="tId != null">
                 t_id = #{tId,jdbcType=BIGINT},
             </if>
@@ -65,7 +73,8 @@
     <update id="updateByPrimaryKey" parameterType="cn.pumch.web.model.Course">
         update course
         set course_name = #{courseName,jdbcType=VARCHAR},
-          t_id = #{tId,jdbcType=BIGINT}
+            course_type = #{courseType,jdbcType=CHAR},
+            t_id = #{tId,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -79,6 +88,9 @@
             <if test="courseName != null">
                 course.course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
+            <if test="courseName != null">
+                course.course_type LIKE #{courseType,jdbcType=CHAR}
+            </if>
         </trim>
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
@@ -90,12 +102,15 @@
             <if test="courseName != null">
                 course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
+            <if test="courseName != null">
+                course.course_type LIKE #{courseType,jdbcType=CHAR}
+            </if>
         </trim>
     </select>
 
     <select id="selectByTIdInPage" resultMap="BaseResultMap">
         select
-        course.id, course.course_name, IFNULL(ps_user.nick_name,"暂无") as tName
+        course.id, course.course_name, course.course_type, IFNULL(ps_user.nick_name,"暂无") as tName
         from course
         LEFT JOIN ps_user on course.t_id=ps_user.id
         where course.t_id = #{tId, jdbcType=VARCHAR}

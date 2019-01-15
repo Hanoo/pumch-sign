@@ -5,6 +5,8 @@ public class Course {
 
     private String courseName;
 
+    private String courseType;
+
     private Long tId;
 
     private String tName;
@@ -23,6 +25,14 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName == null ? null : courseName.trim();
+    }
+
+    public String getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
     }
 
     public Long gettId() {

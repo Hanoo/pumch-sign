@@ -142,6 +142,13 @@
         where login_name = #{loginName, jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByNickName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ps_user
+        where nick_name = #{nickName, jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select
         ps_user.id, ps_user.login_name, ps_user.nick_name, ps_user.sex, ps_user.id_no, ps_user.u_state, ps_user.create_time, ps_user.login_time

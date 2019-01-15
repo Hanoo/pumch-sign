@@ -1,6 +1,7 @@
 package cn.pumch.test;
 
 import cn.pumch.web.util.AESEncrypUtil;
+import cn.pumch.web.util.CommonUtils;
 import cn.pumch.web.util.ParseSystemUtil;
 import cn.pumch.web.util.QRCodeUtil;
 import net.sf.json.JSONArray;
@@ -70,5 +71,14 @@ public class CommonTest {
         for(Integer i : integers) {
             System.out.println(i);
         }
+    }
+
+    @Test
+    public void pinyinTest() {
+
+        String input = "阿里巴巴";
+
+
+        System.out.println(CommonUtils.pinyinTrans(input));
     }
 }

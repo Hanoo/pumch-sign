@@ -69,4 +69,11 @@ public interface PsUserMapper extends GenericDao<PsUser, Long> {
                                 @Param("startTime") Date startTime,
                                 @Param("endTime") Date endTime);
 
+    /**
+     * 通过姓名查询用户信息
+     * @param nickName
+     * @return
+     */
+    PsUser selectByNickName(@Param("nickName") String nickName);
+
 }

@@ -1,6 +1,7 @@
 package cn.pumch.web.controller;
 
 import cn.pumch.core.util.ZipUtils;
+import cn.pumch.web.enums.CourseType;
 import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
@@ -10,6 +11,7 @@ import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
 import cn.pumch.web.service.RoleService;
 import cn.pumch.web.util.CommonUtils;
+import cn.pumch.web.util.MSExcelReader;
 import cn.pumch.web.util.QRCodeUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -17,13 +19,15 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,7 +78,7 @@ public class MTController {
 //        user.setSex(sex);
 
         JSONObject result = new JSONObject();
-        if(userService.createUser(user, roleId)) {
+        if(userService.createUser(user, roleId)>0l) {
             logger.info("用户"+nickName+"创建成功！");
             result.put("result", "success");
         } else {
@@ -264,9 +268,50 @@ public class MTController {
     public JSONObject newCourse(@RequestBody JSONObject queryParam) {
         Long tId = queryParam.getLong("tId");
         String courseName = queryParam.getString("courseName");
+        String courseType = queryParam.getString("courseType");
 
-        String result = courseService.createCourse(courseName, tId);
+        String result = courseService.createCourse(courseName, courseType, tId);
         queryParam.put("result", result);
         return queryParam;
     }
+
+    @RequestMapping(value = "/excelImport", method = RequestMethod.POST)
+    public String excelImport(HttpServletRequest request) throws Exception{
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
+        InputStream in = null;
+        List<List<Object>> listob = null;
+        MultipartFile file = multipartRequest.getFile("upfile");
+
+        if(file.isEmpty()){
+            throw new Exception("文件不存在！");
+        }
+        in = file.getInputStream();
+        listob = MSExcelReader.getBankListByExcel(in, file.getOriginalFilename());
+        in.close();
+
+        //该处可调用service相应方法进行数据保存到数据库中，现只对数据输出
+        for (int i = 0; i < listob.size(); i++) {
+            List<Object> row = listob.get(i);
+            String tName = (String) row.get(1);
+            Long tUserId = userService.createTUserWithNickName(tName);
+
+            String cName = (String) row.get(2);
+            String displayWord = (String) row.get(3);
+            String courseType;
+            if(CourseType.REQUIRED.getDisplayWord().equals(displayWord)) {
+                courseType = CourseType.REQUIRED.getCourseCode();
+            } else {
+                courseType = CourseType.OPTIONAL.getCourseCode();
+            }
+
+            String result = courseService.createCourse(cName, courseType, tUserId);
+            if("success".equals(result) || "duplicateName".equals(result)) {
+                logger.info("课程：" + cName + "创建成功，" + "任课教师为："+ tName);
+            }
+        }
+
+        return "tList";
+    }
+
 }
