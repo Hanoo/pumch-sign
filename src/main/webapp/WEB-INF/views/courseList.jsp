@@ -92,6 +92,7 @@
                         <th>课程名称</th>
                         <th>任课教师</th>
                         <th>课程类型</th>
+                        <th>录入时间</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -104,6 +105,7 @@
                                 <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_note">{{record.tName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_note">{{record.courseType=="0"?"选修":"必修"}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_note">{{record.createTime}}</td>
                             </tr>
                         </template>
                     </tbody>

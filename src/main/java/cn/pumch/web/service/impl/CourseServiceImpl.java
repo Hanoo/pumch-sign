@@ -6,6 +6,7 @@ import cn.pumch.web.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -85,6 +86,7 @@ public class CourseServiceImpl implements CourseService {
             course.setCourseName(courseName);
             course.setCourseType(courseType);
             course.settId(tId);
+            course.setCreateTime(new Date());
 
             int result = courseMapper.insertSelective(course);
             if(result>0) {

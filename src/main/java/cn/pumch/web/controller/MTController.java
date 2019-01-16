@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -202,7 +201,7 @@ public class MTController {
         List<Course> dataList = courseService.getCoursesByConditionsInPage(page, pageSize, courseName);
         int totalRecord = courseService.getCoursesCountByCondition(courseName);
         queryParam.put("totalRecord", totalRecord);
-        queryParam.put("data", JSONArray.fromObject(dataList));
+        queryParam.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
 
         return queryParam;
     }

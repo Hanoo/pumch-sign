@@ -6,9 +6,10 @@
         <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
         <result column="course_type" jdbcType="CHAR" property="courseType"/>
         <result column="t_id" jdbcType="BIGINT" property="tId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, course_name, course_type, t_id
+        id, course_name, course_type, t_id, create_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -21,8 +22,8 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.pumch.web.model.Course">
-        insert into course (id, course_name, course_type, t_id)
-        values (#{id,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{courseType,jdbcType=CHAR} #{tId,jdbcType=BIGINT})
+        insert into course (course_name, course_type, t_id, create_time)
+        values (#{courseName,jdbcType=VARCHAR}, #{courseType,jdbcType=CHAR}, #{tId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" parameterType="cn.pumch.web.model.Course">
         insert into course
@@ -39,6 +40,9 @@
             <if test="tId != null">
                 t_id,
             </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -52,6 +56,9 @@
             </if>
             <if test="tId != null">
                 #{tId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -67,6 +74,9 @@
             <if test="tId != null">
                 t_id = #{tId,jdbcType=BIGINT},
             </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -74,14 +84,15 @@
         update course
         set course_name = #{courseName,jdbcType=VARCHAR},
             course_type = #{courseType,jdbcType=CHAR},
-            t_id = #{tId,jdbcType=BIGINT}
+            t_id = #{tId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <!-- 手动添加 -->
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select
-        course.id, course.course_name, course_type, IFNULL(ps_user.nick_name,"暂无") as tName
+        course.id, course.course_name, course_type, IFNULL(ps_user.nick_name,"暂无") as tName, course.create_time
         from course
         LEFT JOIN ps_user on course.t_id=ps_user.id
         <trim prefix="where" prefixOverrides="AND">
@@ -92,6 +103,7 @@
                 course.course_type LIKE #{courseType,jdbcType=CHAR}
             </if>
         </trim>
+        ORDER BY course.create_time desc
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
     <select id="selectCountByCondition" resultType="java.lang.Integer">
@@ -114,6 +126,7 @@
         from course
         LEFT JOIN ps_user on course.t_id=ps_user.id
         where course.t_id = #{tId, jdbcType=VARCHAR}
+        ORDER BY course.create_time desc
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
     <select id="selectCountByTId" resultType="java.lang.Integer">

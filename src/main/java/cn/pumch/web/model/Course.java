@@ -1,5 +1,7 @@
 package cn.pumch.web.model;
 
+import java.util.Date;
+
 public class Course {
     private Long id;
 
@@ -10,6 +12,8 @@ public class Course {
     private Long tId;
 
     private String tName;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -49,5 +53,13 @@ public class Course {
 
     public void settName(String tName) {
         this.tName = tName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
