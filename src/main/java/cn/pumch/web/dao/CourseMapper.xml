@@ -99,9 +99,6 @@
             <if test="courseName != null">
                 course.course_name LIKE #{courseName,jdbcType=VARCHAR}
             </if>
-            <if test="courseName != null">
-                course.course_type LIKE #{courseType,jdbcType=CHAR}
-            </if>
         </trim>
         ORDER BY course.create_time desc
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -113,9 +110,6 @@
         <trim prefix="where" prefixOverrides="AND">
             <if test="courseName != null">
                 course_name LIKE #{courseName,jdbcType=VARCHAR}
-            </if>
-            <if test="courseName != null">
-                course.course_type LIKE #{courseType,jdbcType=CHAR}
             </if>
         </trim>
     </select>

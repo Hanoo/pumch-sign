@@ -43,11 +43,6 @@
     $(document).ready(function() {
         loadNext(queryParam);
 
-        $("body").delegate(".signRow",'click',function(){
-            var signInId = $(this).attr("id");
-            window.location = "s/score/"+signInId;
-        });
-
         $("#loadMore").on("click", function(){
             $(this).html("加载中~");
             var pageCount = Math.ceil(queryParam.totalRecord/queryParam.pageSize);
@@ -93,8 +88,8 @@
             var li = "<li><div class='pull-left text-list'><h5>课程名称：" +
                 data[i].courseName + "</h5><p>" +
                 displayTime + "</p></div>" +
-                "<div class='pull-right text-nav signRow' id='" + data[i].id +
-                "'><div class=\"pull-right\"><h6>调查问卷</h6><p><span class=\"yellow\">" +
+                "<div class='pull-right text-nav signRow' onClick='window.location=\"s/score/" + data[i].id +
+                "\"'><div class=\"pull-right\"><h6>调查问卷</h6><p><span class=\"yellow\">" +
                 displayScore + "</span></p>" +
                 "</div></div><div class=\"clearfix\"></div></li>"
             square.append(li);
