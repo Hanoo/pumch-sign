@@ -79,4 +79,25 @@ public interface SignInService {
      * @return
      */
     boolean doScore(Long signInId, Integer[] scores);
+
+    /**
+     * 根据学生ID查询任课课程签到列表
+     * @param page 页码
+     * @param pageSize 页长
+     * @param courseName 课程名称
+     * @param sName 学生姓名
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return
+     */
+    List<SignIn> getSignInListInPage(int page, int pageSize, String courseName, String sName, Date startTime, Date endTime);
+
+
+    /**
+     * 根据学生ID查询任课课程签到数量
+     * @param courseName
+     * @param sName
+     * @return
+     */
+    int getSignInCount(String courseName, String sName, Date startTime, Date endTime);
 }

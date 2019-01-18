@@ -138,4 +138,14 @@ public class SignInServiceImpl implements SignInService {
 
         return signInMapper.updateByPrimaryKeySelective(signIn)>0;
     }
+
+    @Override
+    public List<SignIn> getSignInListInPage(int page, int pageSize, String courseName, String sName, Date startTime, Date endTime) {
+        return null;
+    }
+
+    @Override
+    public int getSignInCount(String courseName, String sName, Date startTime, Date endTime) {
+        return 0;
+    }
 }

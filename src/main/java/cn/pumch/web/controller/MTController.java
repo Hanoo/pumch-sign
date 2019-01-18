@@ -6,10 +6,12 @@ import cn.pumch.web.enums.UserType;
 import cn.pumch.web.model.Course;
 import cn.pumch.web.model.PsUser;
 import cn.pumch.web.model.Role;
+import cn.pumch.web.model.SignIn;
 import cn.pumch.web.redis.JedisWrap;
 import cn.pumch.web.service.PsUserService;
 import cn.pumch.web.service.CourseService;
 import cn.pumch.web.service.RoleService;
+import cn.pumch.web.service.SignInService;
 import cn.pumch.web.util.CommonUtils;
 import cn.pumch.web.util.MSExcelReader;
 import cn.pumch.web.util.QRCodeUtil;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -49,6 +52,9 @@ public class MTController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private SignInService signInService;
 
     @Autowired
     private JedisWrap jedisService;
@@ -353,4 +359,65 @@ public class MTController {
 
         return "success";
     }
+
+    @RequestMapping(value = "/signInList", method = RequestMethod.GET)
+    public String signInList() {
+        return "signInList";
+    }
+
+    @RequestMapping(value = "/signList", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject signList(@RequestBody JSONObject queryParam, HttpSession session) {
+        int page = 1;
+        int pageSize = 10;
+        if(null != queryParam.get("currentPageIndex")) {
+            int pageIndex = Integer.valueOf(queryParam.get("currentPageIndex").toString());
+            if(pageIndex>1) {
+                page = pageIndex;
+            }
+        }
+
+        if(null != queryParam.get("pageSize")) {
+            int countInP = Integer.valueOf(queryParam.get("pageSize").toString());
+            if(countInP<1) {
+                pageSize = 0;
+            } else {
+                pageSize = countInP;
+            }
+        }
+
+        Date startTime = null;
+        Date endTime = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+        PsUser psUser = (PsUser) session.getAttribute("userInfo");
+
+        String courseName = null;
+        if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
+            courseName = queryParam.getString("courseName");
+        }
+
+        String sName = null;
+        if(StringUtils.isNotEmpty(queryParam.getString("sName"))) {
+            sName = queryParam.getString("sName");
+        }
+
+        try {
+            if (StringUtils.isNotEmpty(queryParam.getString("startTime"))) {
+                startTime = sdf.parse(queryParam.getString("startTime"));
+            }
+            if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
+                endTime = sdf.parse(queryParam.getString("endTime"));
+            }
+            List<SignIn> dataList = signInService.getSSignInListInPage(page, pageSize, psUser.getId(), courseName, null);
+            int totalRecord = signInService.getSSignInCount(psUser.getId(), courseName, null);
+
+            queryParam.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
+            queryParam.put("totalRecord", totalRecord);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        logger.debug("查询签到列表成功！");
+        return queryParam;
+    }
+
 }

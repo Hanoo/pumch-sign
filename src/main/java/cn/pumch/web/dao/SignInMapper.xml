@@ -196,7 +196,7 @@
             AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
+            AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
         ORDER BY sign_in.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -210,7 +210,7 @@
             AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
+            AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
     </select>
 
@@ -224,7 +224,7 @@
             AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
+            AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
         ORDER BY sign_in.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -238,7 +238,7 @@
             AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
         </if>
         <if test="sName != null">
-            AND ps_user.sName LIKE #{sName,jdbcType=VARCHAR}
+            AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
     </select>
 
