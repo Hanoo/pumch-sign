@@ -141,11 +141,34 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public List<SignIn> getSignInListInPage(int page, int pageSize, String courseName, String sName, Date startTime, Date endTime) {
-        return null;
+        int start;
+        if(page<1) {
+            page = 1;
+        }
+        if(pageSize<10) {
+            pageSize = 10;
+        }
+        start = (page -1) * pageSize;
+
+        if(StringUtils.isNotEmpty(courseName)) {
+            courseName = "%" + courseName + "%";
+        }
+
+        if(StringUtils.isNotEmpty(sName)) {
+            sName = "%" + sName + "%";
+        }
+        return signInMapper.selectByConditionsInPage(start, pageSize, courseName, sName, startTime, endTime);
     }
 
     @Override
     public int getSignInCount(String courseName, String sName, Date startTime, Date endTime) {
-        return 0;
+        if(StringUtils.isNotEmpty(courseName)) {
+            courseName = "%" + courseName + "%";
+        }
+
+        if(StringUtils.isNotEmpty(sName)) {
+            sName = "%" + sName + "%";
+        }
+        return signInMapper.selectCountByConditions(courseName, sName, startTime, endTime);
     }
 }

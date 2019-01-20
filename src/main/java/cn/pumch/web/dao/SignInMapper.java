@@ -84,4 +84,34 @@ public interface SignInMapper {
                               @Param("courseId") Long courseId,
                               @Param("startTime") Date startTim,
                               @Param("endTime") Date endTime);
+
+    /**
+     *
+     * @param start
+     * @param pageSize
+     * @param courseName
+     * @param sName
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<SignIn> selectByConditionsInPage(@Param("start") int start,
+                                          @Param("count") int pageSize,
+                                          @Param("courseName") String courseName,
+                                          @Param("sName")String sName,
+                                          @Param("startTime") Date startTime,
+                                          @Param("endTime") Date endTime);
+
+    /**
+     *
+     * @param courseName
+     * @param sName
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    int selectCountByConditions(@Param("courseName") String courseName,
+                                @Param("sName")String sName,
+                                @Param("startTime") Date startTime,
+                                @Param("endTime") Date endTime);
 }
