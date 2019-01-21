@@ -18,6 +18,7 @@ import cn.pumch.web.util.QRCodeUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -425,19 +426,20 @@ public class MTController {
 
     @RequestMapping(value = "exportSignInList", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject exportSignInList(@RequestBody JSONObject queryParam, HttpServletResponse response) throws IOException {
-
-        Date startTime = null;
-        Date endTime = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
-
-        String courseName = null;
+    public JSONObject exportSignInList(@RequestBody JSONObject queryParam, HttpServletResponse response)
+            throws IOException {
+        String courseName;
         if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
             courseName = queryParam.getString("courseName");
         } else {
             queryParam.put("result", "failed");
             queryParam.put("message", "未指定课程");
+            return queryParam;
         }
+
+        Date startTime;
+        Date endTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
 
         try {
             if (StringUtils.isNotEmpty(queryParam.getString("startTime"))) {
@@ -445,6 +447,7 @@ public class MTController {
             } else {
                 queryParam.put("result", "failed");
                 queryParam.put("message", "未指定开始时间！");
+                return queryParam;
             }
             if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
                 endTime = sdf.parse(queryParam.getString("endTime"));
@@ -461,19 +464,19 @@ public class MTController {
             e.printStackTrace();
             queryParam.put("result", "failed");
             queryParam.put("message", "时间参数有误");
+            return queryParam;
         }
-        List<SignIn> dataList = signInService.getSignInListInPage(0, 1000, courseName, null, startTime, endTime);
 
-        String[] titles = { "课程名称", "学生姓名", "填写时间", "1、课程总体质量", "2、课前对授课内容的掌握程度", "3、课后对授课内容的掌握程度",
-                "4、课程对临床工作的帮助", "5、您觉得教师准备是否充分(不充分到充分1-5分)", "6、教师准备教材PPT是否重点突出，安排得当",
-                "7、教师讲课的语音、语调、语速适中，讲课生动，容易理解", "8、我愿意参加该讲师主讲的课程"};
-
+        HSSFWorkbook workbook = signInService.buildWorkbook(courseName, startTime, endTime);
         response.setContentType("application/binary;charset=UTF-8");
-        ServletOutputStream out = response.getOutputStream();
         response.setHeader("Content-Disposition",
                 "attachment;fileName=" + URLEncoder.encode("调查问卷导出"+startTime+"-"+endTime+".xls", "UTF-8"));
 
-        MSExcelReader.export(titles, dataList, out);
+        ServletOutputStream output = response.getOutputStream();
+        workbook.write(output);
+        output.flush();
+        output.close();
+
         return queryParam;
     }
 }

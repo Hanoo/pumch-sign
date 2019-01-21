@@ -2,6 +2,7 @@ package cn.pumch.web.service;
 
 
 import cn.pumch.web.model.SignIn;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.Date;
 import java.util.List;
@@ -100,4 +101,13 @@ public interface SignInService {
      * @return
      */
     int getSignInCount(String courseName, String sName, Date startTime, Date endTime);
+
+    /**
+     * 构建用于导出的MSExcel对象
+     * @param courseName
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    HSSFWorkbook buildWorkbook(String courseName, Date startTime, Date endTime);
 }
