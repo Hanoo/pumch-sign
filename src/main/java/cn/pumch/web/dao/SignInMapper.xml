@@ -273,10 +273,10 @@
             AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
         <if test="startTime != null">
-            AND sign_in.sign_in_time > #{signInTime,jdbcType=TIMSTAMP}
+            AND sign_in.sign_in_time > #{startTime,jdbcType=TIMESTAMP}
         </if>
         <if test="endTime!=null">
-            AND sign_in.sign_in_time &lt; #{signInTime,jdbcType=TIMESTAMP}
+            AND sign_in.sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
         </if>
         ORDER BY sign_in.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
@@ -293,10 +293,10 @@
             AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
         </if>
         <if test="startTime != null">
-            AND sign_in.sign_in_time > #{signInTime,jdbcType=TIMSTAMP}
+            AND sign_in.sign_in_time > #{startTime,jdbcType=TIMESTAMP}
         </if>
         <if test="endTime!=null">
-            AND sign_in.sign_in_time &lt; #{signInTime,jdbcType=TIMESTAMP}
+            AND sign_in.sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
         </if>
     </select>
 </mapper>

@@ -13,7 +13,7 @@
         <profile>
             <id>local</id>
             <properties>
-                <jdbc.url>jdbc:mysql://127.0.0.1:3306/pumch_sign</jdbc.url>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/pumch-sign</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>mysql</jdbc.password>
                 <log4j.logger.org.wwfchina>DEBUG</log4j.logger.org.wwfchina>
@@ -473,6 +473,18 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
             <version>1.6.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
 </project>

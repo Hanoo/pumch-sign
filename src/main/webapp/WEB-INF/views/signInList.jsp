@@ -48,31 +48,42 @@
                     <a class="btn btn-primary btn-chaxun" href="javascript:void(0);" role="button">
                         <img class="menu-icon" src="assets/image/search.png" width="13">查询
                     </a>
-                    <a class="btn btn-default" href="#" role="button">
-                        <img class="menu-icon" src="assets/image/Cancel.png" width="13">取消
+                    <a class="btn btn-default btn-reset" href="javascript:void(0);" role="button">
+                        <img class="menu-icon" src="assets/image/Cancel.png" width="13">清空
+                    </a>
+                    <a class="btn btn-success btn-export" href="javascript:void(0);" role="button">
+                        <img class="menu-icon" src="assets/image/export.png" width="13">导出
                     </a>
                 </div>
                 <hr class="clearfix">
-                <div class="col-md-4 ">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <label  class="col-sm-3 control-label text-right text-list">学生姓名：</label>
+                        <label class="col-sm-3 control-label text-right text-list">学生姓名：</label>
                         <div class="col-sm-7">
                             <input type="text" id="sName" class="form-control input2" placeholder="">
                         </div>
                     </div>
                 </div>
-                <%--<div class="col-md-4">--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-sm-2 control-label text-right text-list">状态：</label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<select class="form-control input2" id="state">--%>
-                                <%--<option>请选择状态</option>--%>
-                                <%--<option>在籍</option>--%>
-                                <%--<option>毕业</option>--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-right text-list">课程名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="courseName" class="form-control input2" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label text-right text-list">日期：</label>
+                        <div class="input-group pull-left col-md-2">
+                            <input type="text" class="form-control input2" placeholder="开始日期" id="startTime" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="pull-left"><span class="to">至</span></div>
+                        <div class="input-group pull-left col-md-2">
+                            <input type="text" class="form-control input2" placeholder="结束日期" id="endTime" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -80,8 +91,8 @@
 
             <h1 class="pull-left">查询信息</h1>
             <div class="row pull-right btn-zong">
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>
-                <a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>
+                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看设备</a>--%>
+                <%--<a href="" class="btn btn-default "><img src="assets/image/Magnifier.png" width="13">查看积分</a>--%>
             </div>
 
             <hr class="clearfix">
@@ -232,10 +243,17 @@
 
         $(".btn-chaxun").on("click", function() {
             queryParam.sName=$("#sName").val();
-//            queryParam.state=$("#state").val();
-            queryParam.startTime="";
-            queryParam.endTime="";
+            queryParam.courseName=$("#courseName").val();
+            queryParam.startTime=$("#startTime").val();
+            queryParam.endTime=$("#endTime").val();
             vue.request();
+        });
+
+        $(".btn-reset").on("click", function(){
+            $("#sName").val("");
+            $("#courseName").val("");
+            $("#startTime").val("");
+            $("#endTime").val("");
         });
 
         active();
