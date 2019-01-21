@@ -1,5 +1,6 @@
 package cn.pumch.test;
 
+import cn.pumch.web.model.SignIn;
 import cn.pumch.web.util.AESEncrypUtil;
 import cn.pumch.web.util.CommonUtils;
 import cn.pumch.web.util.ParseSystemUtil;
@@ -8,6 +9,7 @@ import net.sf.json.JSONArray;
 import org.junit.Test;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,5 +82,18 @@ public class CommonTest {
 
 
         System.out.println(CommonUtils.pinyinTrans(input));
+    }
+
+    @Test
+    public void testField() throws IllegalAccessException {
+        Object signIn = new SignIn();
+
+        Field[] fields = signIn.getClass().getDeclaredFields();
+        for(int i=0; i<fields.length; i++){
+            Field f = fields[i];
+            f.setAccessible(true);
+            System.out.println("属性名:" + f.getName() + " 属性值:" + f.get(signIn));
+        }
+
     }
 }

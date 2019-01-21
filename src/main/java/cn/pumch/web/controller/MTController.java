@@ -26,14 +26,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -367,7 +371,7 @@ public class MTController {
 
     @RequestMapping(value = "/signList", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject signList(@RequestBody JSONObject queryParam, HttpSession session) {
+    public JSONObject signList(@RequestBody JSONObject queryParam) {
         int page = 1;
         int pageSize = 10;
         if(null != queryParam.get("currentPageIndex")) {
@@ -389,7 +393,6 @@ public class MTController {
         Date startTime = null;
         Date endTime = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
-        PsUser psUser = (PsUser) session.getAttribute("userInfo");
 
         String courseName = null;
         if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
@@ -420,4 +423,57 @@ public class MTController {
         return queryParam;
     }
 
+    @RequestMapping(value = "exportSignInList", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject exportSignInList(@RequestBody JSONObject queryParam, HttpServletResponse response) throws IOException {
+
+        Date startTime = null;
+        Date endTime = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+
+        String courseName = null;
+        if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
+            courseName = queryParam.getString("courseName");
+        } else {
+            queryParam.put("result", "failed");
+            queryParam.put("message", "未指定课程");
+        }
+
+        try {
+            if (StringUtils.isNotEmpty(queryParam.getString("startTime"))) {
+                startTime = sdf.parse(queryParam.getString("startTime"));
+            } else {
+                queryParam.put("result", "failed");
+                queryParam.put("message", "未指定开始时间！");
+            }
+            if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
+                endTime = sdf.parse(queryParam.getString("endTime"));
+            } else {
+                // 不指定结束时间就查当天的
+                Calendar instance = Calendar.getInstance();
+                instance.setTime(startTime);
+                instance.set(Calendar.HOUR_OF_DAY, 23);
+                instance.set(Calendar.MINUTE, 59);
+                instance.set(Calendar.SECOND, 59);
+                endTime = instance.getTime();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            queryParam.put("result", "failed");
+            queryParam.put("message", "时间参数有误");
+        }
+        List<SignIn> dataList = signInService.getSignInListInPage(0, 1000, courseName, null, startTime, endTime);
+
+        String[] titles = { "课程名称", "学生姓名", "填写时间", "1、课程总体质量", "2、课前对授课内容的掌握程度", "3、课后对授课内容的掌握程度",
+                "4、课程对临床工作的帮助", "5、您觉得教师准备是否充分(不充分到充分1-5分)", "6、教师准备教材PPT是否重点突出，安排得当",
+                "7、教师讲课的语音、语调、语速适中，讲课生动，容易理解", "8、我愿意参加该讲师主讲的课程"};
+
+        response.setContentType("application/binary;charset=UTF-8");
+        ServletOutputStream out = response.getOutputStream();
+        response.setHeader("Content-Disposition",
+                "attachment;fileName=" + URLEncoder.encode("调查问卷导出"+startTime+"-"+endTime+".xls", "UTF-8"));
+
+        MSExcelReader.export(titles, dataList, out);
+        return queryParam;
+    }
 }

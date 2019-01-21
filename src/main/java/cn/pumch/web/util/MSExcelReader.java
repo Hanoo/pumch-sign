@@ -2,17 +2,21 @@ package cn.pumch.web.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import cn.pumch.web.model.SignIn;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.servlet.ServletOutputStream;
 
 public class MSExcelReader {
     private final static String excel2003L =".xls";    //2003- 版本的excel
@@ -116,6 +120,46 @@ public class MSExcelReader {
                 break;
         }
         return value;
+    }
+
+    public static void export(String[] titles, List<SignIn> dataList, ServletOutputStream output){
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet hssfSheet = workbook.createSheet("sheet1");
+
+        HSSFRow row = hssfSheet.createRow(0);
+        HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
+
+        //居中样式
+        hssfCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell hssfCell = null;
+        for (int i = 0; i < titles.length; i++) {
+            hssfCell = row.createCell(i);//列索引从0开始
+            hssfCell.setCellValue(titles[i]);//列名1
+            hssfCell.setCellStyle(hssfCellStyle);//列居中显示
+        }
+
+        try {
+            for (int i = 0; i < dataList.size(); i++) {
+                row = hssfSheet.createRow(i+1);
+                Field[] fields = dataList.get(i).getClass().getFields();
+
+                for(int j=0;i<fields.length;j++) {
+                    String fieldName = fields[j].getName();
+                    if("id".equals(fieldName)) {
+                        continue;
+                    }
+                    row.createCell(j).setCellValue(fields[j].get(fields[j]).toString());
+                }
+            }
+
+            workbook.write(output);
+            output.flush();
+            output.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
