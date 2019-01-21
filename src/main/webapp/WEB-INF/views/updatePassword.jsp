@@ -34,16 +34,7 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="mt/sList"><img class="menu-icon" src="assets/image/Users.png" width="16">学生查询</a></li>
-                <li><a href="mt/tList"><img class="menu-icon" src="assets/image/Users.png" width="16">教师查询</a></li>
-                <li><a href="mt/courseList"><img class="menu-icon" src="assets/image/Users.png" width="16">课程查询</a></li>
-                <li><a href="mt/newUser"><img class="menu-icon" src="assets/image/Users.png" width="16">新建用户</a></li>
-                <li><a href="mt/newCourse"><img class="menu-icon" src="assets/image/Users.png" width="16">添加课程</a></li>
-                <li class="active"><a href="javascript:void(0);"><img class="menu-icon" src="assets/image/Users.png" width="16">修改密码</a></li>
-            </ul>
-        </div>
+        <%@ include file="nav-sidebar.jsp"  %>
         <div class="main">
             <ol class="breadcrumb">
                 <li><a href="javascript:void(0);">首页</a></li>
@@ -134,6 +125,8 @@
         $(".reset").on("click", function () {
             $("#mainForm").reset();
         });
+
+        active();
     });
 </script>
 

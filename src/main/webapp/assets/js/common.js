@@ -228,3 +228,18 @@ function processMsg(html){
     html = html.replace("：","");
     return html.trim();
 }
+
+function active(){
+    var url =  window.location.href;
+    var uArray = url.split("/");
+    var uP = uArray[uArray.length - 1];
+
+    $(".nav-sidebar").find("a").each(function (i, e) {
+        var href = $(e).attr("href");
+        var hArray = href.split("/");
+        var dP = hArray[hArray.length - 1];
+        if(uP == dP) {
+            $(e).parent().addClass("active");
+        }
+    })
+}

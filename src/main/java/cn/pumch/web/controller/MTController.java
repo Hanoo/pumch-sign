@@ -408,8 +408,8 @@ public class MTController {
             if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
                 endTime = sdf.parse(queryParam.getString("endTime"));
             }
-            List<SignIn> dataList = signInService.getSSignInListInPage(page, pageSize, psUser.getId(), courseName, null);
-            int totalRecord = signInService.getSSignInCount(psUser.getId(), courseName, null);
+            List<SignIn> dataList = signInService.getSignInListInPage(page, pageSize, courseName, sName, startTime, endTime);
+            int totalRecord = signInService.getSignInCount(courseName, sName, startTime, endTime);
 
             queryParam.put("data", JSONArray.fromObject(dataList, CommonUtils.getJsonConfig()));
             queryParam.put("totalRecord", totalRecord);
