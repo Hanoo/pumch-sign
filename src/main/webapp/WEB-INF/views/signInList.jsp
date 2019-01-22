@@ -240,6 +240,25 @@
             $("#endTime").val("");
         });
 
+        $(".btn-export").on("click", function () {
+            var courseName = $("#courseName").val();
+            if(!courseName) {
+                alert("请输入需要导出的课程名称！");
+                return;
+            }
+            var startTime = $("#startTime").val();
+            if(!startTime) {
+                alert("请输入导出的开始时间！");
+                return;
+            }
+            var endTime = $("#endTime").val();
+            var url = "mt/exportSignInList?courseName="+courseName+"&startTime="+startTime;
+            if(endTime) {
+                url += "&endTime=" + endTime;
+            }
+            window.open(url);
+        });
+
         active();
     });
 </script>

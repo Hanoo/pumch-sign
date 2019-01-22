@@ -186,11 +186,20 @@ public class SignInServiceImpl implements SignInService {
 
         HSSFRow row = hssfSheet.createRow(0);
         HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
+        hssfSheet.setColumnWidth(2, 15*256);
+        hssfSheet.setColumnWidth(3, 15*256);
+        hssfSheet.setColumnWidth(4, 30*256);
+        hssfSheet.setColumnWidth(5, 30*256);
+        hssfSheet.setColumnWidth(6, 30*256);
+        hssfSheet.setColumnWidth(7, 30*256);
+        hssfSheet.setColumnWidth(8, 40*256);
+        hssfSheet.setColumnWidth(9, 40*256);
+        hssfSheet.setColumnWidth(10, 30*256);
 
         //居中样式
         hssfCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 
-        String[] titles = { "课程名称", "学生姓名", "填写时间", "1、课程总体质量", "2、课前对授课内容的掌握程度", "3、课后对授课内容的掌握程度",
+        String[] titles = { "课程名称", "任课教师", "学生姓名", "签到时间", "填写时间", "1、课程总体质量", "2、课前对授课内容的掌握程度", "3、课后对授课内容的掌握程度",
                 "4、课程对临床工作的帮助", "5、您觉得教师准备是否充分(不充分到充分1-5分)", "6、教师准备教材PPT是否重点突出，安排得当",
                 "7、教师讲课的语音、语调、语速适中，讲课生动，容易理解", "8、我愿意参加该讲师主讲的课程"};
         HSSFCell hssfCell = null;
@@ -206,15 +215,20 @@ public class SignInServiceImpl implements SignInService {
             row = hssfSheet.createRow(i+1);
             row.createCell(0).setCellValue(dataList.get(i).getCourseName());
             row.createCell(1).setCellValue(dataList.get(i).getNickName());
-            row.createCell(2).setCellValue(dataList.get(i).getScoreTime());
-            row.createCell(3).setCellValue(dataList.get(i).getScore1());
-            row.createCell(3).setCellValue(dataList.get(i).getScore2());
-            row.createCell(3).setCellValue(dataList.get(i).getScore3());
-            row.createCell(3).setCellValue(dataList.get(i).getScore4());
-            row.createCell(3).setCellValue(dataList.get(i).getScore5());
-            row.createCell(3).setCellValue(dataList.get(i).getScore6());
-            row.createCell(3).setCellValue(dataList.get(i).getScore7());
-            row.createCell(3).setCellValue(dataList.get(i).getScore8());
+            if(null!=dataList.get(i).getScoreTime()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                row.createCell(2).setCellValue(sdf.format(dataList.get(i).getSignInTime()));
+                row.createCell(3).setCellValue(sdf.format(dataList.get(i).getScoreTime()));
+
+                row.createCell(4).setCellValue(dataList.get(i).getScore1());
+                row.createCell(5).setCellValue(dataList.get(i).getScore2());
+                row.createCell(6).setCellValue(dataList.get(i).getScore3());
+                row.createCell(7).setCellValue(dataList.get(i).getScore4());
+                row.createCell(8).setCellValue(dataList.get(i).getScore5());
+                row.createCell(9).setCellValue(dataList.get(i).getScore6());
+                row.createCell(10).setCellValue(dataList.get(i).getScore7());
+                row.createCell(11).setCellValue(dataList.get(i).getScore8());
+            }
         }
 
         return workbook;

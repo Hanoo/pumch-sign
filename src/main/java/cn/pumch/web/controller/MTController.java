@@ -424,17 +424,16 @@ public class MTController {
         return queryParam;
     }
 
-    @RequestMapping(value = "exportSignInList", method = RequestMethod.GET)
-    @ResponseBody
-    public JSONObject exportSignInList(@RequestBody JSONObject queryParam, HttpServletResponse response)
+    @RequestMapping(value = "/exportSignInList", method = RequestMethod.GET)
+    public void exportSignInList(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String courseName;
-        if(StringUtils.isNotEmpty(queryParam.getString("courseName"))) {
-            courseName = queryParam.getString("courseName");
-        } else {
-            queryParam.put("result", "failed");
-            queryParam.put("message", "未指定课程");
-            return queryParam;
+
+        ServletOutputStream output = response.getOutputStream();
+        response.setContentType("application/binary;charset=UTF-8");
+        String courseName = request.getParameter("courseName");
+        if(StringUtils.isEmpty(courseName)) {
+            output.write("未指定导出课程，导出失败！".getBytes("UTF-8"));
+            return;
         }
 
         Date startTime;
@@ -442,15 +441,14 @@ public class MTController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
 
         try {
-            if (StringUtils.isNotEmpty(queryParam.getString("startTime"))) {
-                startTime = sdf.parse(queryParam.getString("startTime"));
+            if (StringUtils.isNotEmpty(request.getParameter("startTime"))) {
+                startTime = sdf.parse(request.getParameter("startTime"));
             } else {
-                queryParam.put("result", "failed");
-                queryParam.put("message", "未指定开始时间！");
-                return queryParam;
+                output.write("未指定导出开始时间！".getBytes());
+                return;
             }
-            if (StringUtils.isNotEmpty(queryParam.getString("endTime"))) {
-                endTime = sdf.parse(queryParam.getString("endTime"));
+            if (StringUtils.isNotEmpty(request.getParameter("endTime"))) {
+                endTime = sdf.parse(request.getParameter("endTime"));
             } else {
                 // 不指定结束时间就查当天的
                 Calendar instance = Calendar.getInstance();
@@ -461,22 +459,16 @@ public class MTController {
                 endTime = instance.getTime();
             }
         } catch (ParseException e) {
-            e.printStackTrace();
-            queryParam.put("result", "failed");
-            queryParam.put("message", "时间参数有误");
-            return queryParam;
+            output.write("时间格式化错误导致导出失败！".getBytes());
+            return;
         }
 
         HSSFWorkbook workbook = signInService.buildWorkbook(courseName, startTime, endTime);
-        response.setContentType("application/binary;charset=UTF-8");
         response.setHeader("Content-Disposition",
-                "attachment;fileName=" + URLEncoder.encode("调查问卷导出"+startTime+"-"+endTime+".xls", "UTF-8"));
-
-        ServletOutputStream output = response.getOutputStream();
+                "attachment;fileName=" + URLEncoder.encode("调查问卷导出"+sdf.format(startTime)
+                        + "-" + sdf.format(endTime)+".xls", "UTF-8"));
         workbook.write(output);
         output.flush();
         output.close();
-
-        return queryParam;
     }
 }
