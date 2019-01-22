@@ -2,6 +2,9 @@ package cn.pumch.web.model;
 
 import java.util.Date;
 
+/**
+ * 实际上这是一个BO和VO的综合体，有些field并不存在于数据库表中
+ */
 public class SignIn {
 
     private Long id;
@@ -30,9 +33,20 @@ public class SignIn {
 
     private Integer score8;
 
+    /**
+     * 签到学生姓名
+     */
     private String nickName;
 
+    /**
+     * 课程名称
+     */
     private String courseName;
+
+    /**
+     * 任课教师姓名
+     */
+    private String tName;
 
     public Long getId() {
         return id;
@@ -152,5 +166,13 @@ public class SignIn {
 
     public void setScore8(Integer score8) {
         this.score8 = score8;
+    }
+
+    public String gettName() {
+        return tName;
+    }
+
+    public void settName(String tName) {
+        this.tName = tName;
     }
 }

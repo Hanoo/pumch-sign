@@ -83,20 +83,22 @@
                     <thead>
                     <tr>
                         <th>序号</th>
+                        <th>任课教师</th>
                         <th>课程名称</th>
                         <th>签到人</th>
                         <th>签到时间</th>
-                        <th>调查问卷</th>
+                        <th>填报时间</th>
                     </tr>
                     </thead>
                     <tbody>
                         <template v-if="data&&data.length>0">
                             <tr role="row" id="1" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr" v-for="(record, index) in data">
                                 <td role="gridcell" aria-describedby="grid-table_id">{{index+1}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_stock">{{record.tName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_stock">{{record.courseName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_note">{{record.nickName}}</td>
                                 <td role="gridcell" aria-describedby="grid-table_ship">{{record.signInTime}}</td>
-                                <td role="gridcell" aria-describedby="grid-table_ship">{{record.score1==null?"未填":"已填"}}</td>
+                                <td role="gridcell" aria-describedby="grid-table_ship">{{record.scoreTime}}</td>
                             </tr>
                         </template>
                     </tbody>

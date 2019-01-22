@@ -262,23 +262,26 @@
     </select>
 
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
-        select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,
-        sign_in.score_1,sign_in.score_2,sign_in.score_3,sign_in.score_4,sign_in.score_5,sign_in.score_6,sign_in.score_7,sign_in.score_8, sign_in.score_time
-        from sign_in, course, ps_user
-        where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
-        <if test="courseName != null">
-            AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
-        </if>
-        <if test="sName != null">
-            AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
-        </if>
-        <if test="startTime != null">
-            AND sign_in.sign_in_time > #{startTime,jdbcType=TIMESTAMP}
-        </if>
-        <if test="endTime!=null">
-            AND sign_in.sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
-        </if>
-        ORDER BY sign_in.sign_in_time DESC
+        select signIn.*, ps_user.nick_name as tName from (
+            select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.course_id,
+            sign_in.score_1,sign_in.score_2,sign_in.score_3,sign_in.score_4,sign_in.score_5,sign_in.score_6,sign_in.score_7,sign_in.score_8, sign_in.score_time
+            from sign_in, course, ps_user
+            where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id
+            <if test="courseName != null">
+                AND course.course_name LIKE #{courseName,jdbcType=VARCHAR}
+            </if>
+            <if test="sName != null">
+                AND ps_user.nick_name LIKE #{sName,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                AND sign_in.sign_in_time > #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime!=null">
+                AND sign_in.sign_in_time &lt; #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        ) as signIn, course, ps_user
+        where signIn.course_id=course.id and course.t_id=ps_user.id
+        ORDER BY signIn.sign_in_time DESC
         limit #{start,jdbcType=TINYINT}, #{count,jdbcType=TINYINT}
     </select>
 
