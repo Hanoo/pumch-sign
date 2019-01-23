@@ -211,25 +211,41 @@ public class SignInServiceImpl implements SignInService {
         }
 
         List<SignIn> dataList = this.getSignInListInPage(0, 1000, courseName, null, startTime, endTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         for (int i = 0; i < dataList.size(); i++) {
             row = hssfSheet.createRow(i+1);
             row.createCell(0).setCellValue(dataList.get(i).getCourseName());
             row.createCell(1).setCellValue(dataList.get(i).gettName());
             row.createCell(2).setCellValue(dataList.get(i).getNickName());
+            row.createCell(3).setCellValue(sdf.format(dataList.get(i).getSignInTime()));
             if(null!=dataList.get(i).getScoreTime()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                row.createCell(3).setCellValue(sdf.format(dataList.get(i).getSignInTime()));
                 row.createCell(4).setCellValue(sdf.format(dataList.get(i).getScoreTime()));
 
-                row.createCell(5).setCellValue(dataList.get(i).getScore1());
-                row.createCell(6).setCellValue(dataList.get(i).getScore2());
-                row.createCell(7).setCellValue(dataList.get(i).getScore3());
-                row.createCell(8).setCellValue(dataList.get(i).getScore4());
-                row.createCell(9).setCellValue(dataList.get(i).getScore5());
-                row.createCell(10).setCellValue(dataList.get(i).getScore6());
-                row.createCell(11).setCellValue(dataList.get(i).getScore7());
-                row.createCell(12).setCellValue(dataList.get(i).getScore8());
+                if(null!=dataList.get(i).getScore1()) {
+                    row.createCell(5).setCellValue(dataList.get(i).getScore1());
+                }
+                if(null!=dataList.get(i).getScore2()) {
+                    row.createCell(6).setCellValue(dataList.get(i).getScore2());
+                }
+                if(null!=dataList.get(i).getScore3()) {
+                    row.createCell(7).setCellValue(dataList.get(i).getScore3());
+                }
+                if(null!=dataList.get(i).getScore4()) {
+                    row.createCell(8).setCellValue(dataList.get(i).getScore4());
+                }
+                if(null!=dataList.get(i).getScore5()) {
+                    row.createCell(9).setCellValue(dataList.get(i).getScore5());
+                }
+                if(null!=dataList.get(i).getScore6()) {
+                    row.createCell(10).setCellValue(dataList.get(i).getScore6());
+                }
+                if(null!=dataList.get(i).getScore7()) {
+                    row.createCell(11).setCellValue(dataList.get(i).getScore7());
+                }
+                if(null!=dataList.get(i).getScore8()) {
+                    row.createCell(12).setCellValue(dataList.get(i).getScore8());
+                }
             }
         }
 

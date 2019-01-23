@@ -30,11 +30,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -426,12 +423,12 @@ public class MTController {
 
     @RequestMapping(value = "/exportSignInList", method = RequestMethod.GET)
     public void exportSignInList(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws Exception {
 
         ServletOutputStream output = response.getOutputStream();
-        response.setContentType("application/binary;charset=UTF-8");
         String courseName = request.getParameter("courseName");
         if(StringUtils.isEmpty(courseName)) {
+            response.setContentType("text/html;charset=utf-8");
             output.write("未指定导出课程，导出失败！".getBytes("UTF-8"));
             return;
         }
@@ -444,7 +441,8 @@ public class MTController {
             if (StringUtils.isNotEmpty(request.getParameter("startTime"))) {
                 startTime = sdf.parse(request.getParameter("startTime"));
             } else {
-                output.write("未指定导出开始时间！".getBytes());
+                response.setContentType("text/html;charset=utf-8");
+                output.write("未指定导出开始时间！".getBytes("UTF-8"));
                 return;
             }
             if (StringUtils.isNotEmpty(request.getParameter("endTime"))) {
@@ -459,16 +457,17 @@ public class MTController {
                 endTime = instance.getTime();
             }
         } catch (ParseException e) {
-            output.write("时间格式化错误导致导出失败！".getBytes());
+            response.setContentType("text/html;charset=utf-8");
+            output.write("时间格式化错误导致导出失败！".getBytes("UTF-8"));
             return;
         }
 
         HSSFWorkbook workbook = signInService.buildWorkbook(courseName, startTime, endTime);
+        response.setContentType("application/binary;charset=UTF-8");
         response.setHeader("Content-Disposition",
                 "attachment;fileName=" + URLEncoder.encode("调查问卷导出"+sdf.format(startTime)
                         + "-" + sdf.format(endTime)+".xls", "UTF-8"));
         workbook.write(output);
         output.flush();
-        output.close();
-    }
+        output.close();    }
 }
