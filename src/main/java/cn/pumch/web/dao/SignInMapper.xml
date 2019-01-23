@@ -263,7 +263,7 @@
 
     <select id="selectByConditionsInPage" resultMap="BaseResultMap">
         select signIn.*, ps_user.nick_name as tName from (
-            select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.course_id,
+            select sign_in.id, ps_user.nick_name,sign_in.sign_in_time,course.course_name,sign_in.course_id,ps_user.id_no,
             sign_in.score_1,sign_in.score_2,sign_in.score_3,sign_in.score_4,sign_in.score_5,sign_in.score_6,sign_in.score_7,sign_in.score_8, sign_in.score_time
             from sign_in, course, ps_user
             where sign_in.signer_id=ps_user.id and sign_in.course_id=course.id

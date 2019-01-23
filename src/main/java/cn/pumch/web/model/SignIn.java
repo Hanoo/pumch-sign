@@ -48,6 +48,8 @@ public class SignIn {
      */
     private String tName;
 
+    private String idNo;
+
     public Long getId() {
         return id;
     }
@@ -174,5 +176,13 @@ public class SignIn {
 
     public void settName(String tName) {
         this.tName = tName;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 }
