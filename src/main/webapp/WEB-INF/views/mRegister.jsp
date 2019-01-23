@@ -80,7 +80,7 @@
         var kaptcha=$("#kaptcha").val();
         var confirm=$("#confirm").val();
         var idNo = $("#idNo").val();
-        var prts =  $("#message");
+
         if(loginName==""||loginName==null){
             $('#loginName').css('borderColor', 'red').focus();
             return;
@@ -95,6 +95,10 @@
         }
         if(password=="" || password==null){
             $('#password').css('borderColor', 'red').focus();
+            return;
+        }
+        if(!idNo) {
+            $('#idNo').css('borderColor', 'red').focus();
             return;
         }
         if(password!=confirm) {

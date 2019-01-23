@@ -89,13 +89,17 @@
         var kaptcha=$("#kaptcha").val();
         var confirm=$("#confirm").val();
         var idNo = $("#idNo").val();
-        var prts =  $("#message");
+
         if(loginName==""||loginName==null){
             $('#loginName').css('borderColor', 'red').focus();
             return;
         }
         if(nickName==""||nickName==null){
             $('#nickName').css('borderColor', 'red').focus();
+            return;
+        }
+        if(!idNo) {
+            $('#idNo').css('borderColor', 'red').focus();
             return;
         }
         if(kaptcha=="" || kaptcha==null){
@@ -127,7 +131,7 @@
                 }
             },
             error:function(msg){
-                alert("服务器内部错误！");
+                alert("服务器内部错误！"+msg);
             }
 
         });
