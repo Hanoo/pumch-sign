@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.Random;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,10 +44,11 @@ public class ServiceTest {
             user.setNickName(loginName);
             user.setIdNo(CommonUtils.getUUId().substring(0,10));
             user.setuState("1");
+            user.setCreateTime(new Date());
 
             try {
                 if(userService.doReg(user)) {
-                    System.out.println("User " + loginName + " create successfully.");
+                    System.out.println("No."+i+" user " + loginName + " create successfully.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
